@@ -25,4 +25,4 @@ iv1 The effect that a shorter release cycle produces on developer productivity c
 
 iv2 A very important metric to track the quality of a software is code coverage. The authors could have efficiently observed the quality of unit tests written for both the models by comparing their code coverage numbers.
 
-iv3 The authors can check for number of features released in traditional release model compared to multiple rapid releases for the same time period. They could then use this information observe the number of bugs with relation to the number of features released in both the models.
+iv3 The authors can check for number of features released in traditional release model compared to multiple rapid releases for the same time period. They could then use this information and observe the number of bugs with relation to the number of features released in both the models.
