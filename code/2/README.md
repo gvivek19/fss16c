@@ -1,12 +1,13 @@
 #Week 2
 
 ##Active shooter exercise
-List two things *not to do* during an active shooter event.
-i. Do not huddle. Spread out across the room.ii. Do not panic and shout.
+###List two things *not to do* during an active shooter event.
+1. Do not huddle. Spread out across the room.
+2. Do not panic and shout.
 
-List two things *best to do* during an active shooter event.
-i. Try to get away from the shooter, hide from the shooter or take down the shooter.
-ii. Know your surrounding and the exit routes and get out.
+###List two things *best to do* during an active shooter event.
+1. Try to get away from the shooter, hide from the shooter or take down the shooter.
+2. Know your surrounding and the exit routes and get out.
 
 ##ZeroR
 
@@ -59,3 +60,5 @@ rank ,         name ,    med   ,  iqr
    2 ,       rbfnet ,       9  ,     5 (     -----   * |----          ), 4.00,  7.00,  9.00, 11.00, 14.00
    2 ,         bnet ,      11  ,     6 (        -----  |*   ------    ), 6.00,  9.00, 11.00, 14.00, 18.00
    ```
+
+##Table Reader
