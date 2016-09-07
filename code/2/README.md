@@ -62,3 +62,22 @@ rank ,         name ,    med   ,  iqr
    ```
 
 ##Table Reader
+
+Code can be found [here](https://github.com/gvivek19/fss16c/tree/master/code/2/tableReader)
+To run the code, 
+```
+python table.py <dataset>
+```
+
+```
+outlook
+Mode : sunny    Entropy : 1.57740628285
+temperature-
+Mean : 73.5714285714    Standard Deviation : 6.57166745863
+<humidity
+Mean : 81.6428571429    Standard Deviation : 10.285218242
+windy
+Mode : FALSE    Entropy : 0.985228136034
+>play
+Mean : 1.07142857143    Standard Deviation : 0.997248963151
+```
