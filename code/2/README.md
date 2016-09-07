@@ -63,7 +63,8 @@ rank ,         name ,    med   ,  iqr
 
 ##Table Reader
 
-Code can be found [here](https://github.com/gvivek19/fss16c/tree/master/code/2/tableReader)
+Code can be found [here](https://github.com/gvivek19/fss16c/tree/master/code/2/tableReader).
+
 To run the code, 
 ```
 python table.py <dataset>
