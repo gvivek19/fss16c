@@ -21,11 +21,11 @@ iii3 Data: The data was obtained from release histories, bus reporting and fixin
 iii4 Informative visualizations: Figure 2 shows a detailed information about the number of bugs across different versions. Figure 3 and 4 show the usage based on the versions for Firefox and Chrome. Figure 5 shows the browser usage in the market. The correlation between the popularity and the number of defects is shown in Figure 6 & 7.
 
 ##iv Improvements
-iv1 
+iv1 More information on previous research/work on this field could have been provided
 
-iv2 
+iv2 The authors could have categorized the bug based on their type(eg. Rendering bug, crash etc) and compare if similar bugs occur in both the browsers
 
-iv3 
+iv3 Compare the code size of both the browsers and check if they have any correlation with the number of bugs reported.
 
 ##Connection to the 2012 paper
 Title - Do Faster Releases Improve Software Quality? - An Empirical Case Study of Mozilla Firefox
