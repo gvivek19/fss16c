@@ -1,6 +1,7 @@
 #Week 3
 
 The code can be found [here](https://github.com/gvivek19/fss16c/tree/master/code/3/code)
+
 Output:
 
 ```
