@@ -1,6 +1,6 @@
 ##i Reference
 	
-Applied Quality Assurance Methods under the Open Source Development Model 
+T. Otte, R. Moreton and H.D. Knoell, "Applied quality assurance methods under the open source development model", Proc. of the 32nd Annual IEEE Intl. Computer Software and Applications Conf. (COMPSAC) 2008, pp. 1247-1252. 
 
 
 ##ii Keywords
