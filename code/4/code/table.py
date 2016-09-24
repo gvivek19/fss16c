@@ -2,7 +2,7 @@ import sys, math
 import Num, Sym, CSVReader, ARFFReader
 
 class Table :
-    def __init__(self, fileName):
+    def __init__(self, fileName=None):
         self.rows = []
         self.cols = []
         self.headers = []
@@ -11,8 +11,27 @@ class Table :
             self.rowsGenerator = ARFFReader.ARFFReader(fileName).read()
         elif filetype == "csv" :
             self.rowsGenerator = CSVReader.CSVReader(fileName).read()
-        self.generateTable()
-        
+        if fileType != None :
+            self.generateTable()
+
+    def add_row(self, row) :
+        if self.headers is None :
+            index = 0
+            for val in row :
+                if type(val) is int or type(val) is float:
+                    self.cols.append(Num.Num())
+                    self.cols[index].add(val)
+                else:
+                    self.cols.append(Sym.Sym())
+                    self.cols[index].add(val)
+                index += 1
+        else :
+            self.rows.append(row)
+            index = 0
+            for val in row :
+                self.cols[index].add(val)
+                index += 1
+    
     def generateTable(self):
         self.headers = self.rowsGenerator.next()
         self.rows.append(self.rowsGenerator.next())
@@ -25,21 +44,21 @@ class Table :
                 self.cols.append(Sym.Sym())
                 self.cols[index].add(val)
             index += 1
-        
+
         for row in self.rowsGenerator :
             self.rows.append(row)
             index = 0
             for val in row:
                 self.cols[index].add(val)
                 index += 1
-    
+
     def showStats(self) :
         index = 0
         for col in self.cols :
             print self.headers[index]
             col.show()
             index += 1
-            
+
     def row_distance(self, row1, row2) :
         distance = 0
         index = 0
@@ -47,7 +66,7 @@ class Table :
             col = self.cols[index]
             distance += (col.dist(row1[index], row2[index]))
         return math.sqrt(distance)
-        
+
     def find_nearest(self, row) :
         nearest = None
         distance = 10**32
@@ -58,7 +77,7 @@ class Table :
                     nearest = r
                     distance = current_distance
         return nearest
-    
+
     def find_furthest(self, row) :
         furthest = None
         distance = 10**-32
@@ -81,5 +100,3 @@ if __name__ == "__main__":
     print table.rows[1]
     print "Closest : ",table.find_nearest(table.rows[1])
     print "Furthest : ", table.find_furthest(table.rows[1])
-    
-    
