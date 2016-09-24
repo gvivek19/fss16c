@@ -8,7 +8,9 @@ class KNN :
         self.k = 1
         if op_fun == "KDTree":
             self.training_function = self.kdtree
+            self.prediction_function = self.knn_kmeans
             self.k = 1
+            self.root = None
         elif op_fun == "KMeans":
             self.clusters = None
             self.training_function = self.kmeans
@@ -22,8 +24,13 @@ class KNN :
             for cluster in self.clusters :
                 self.table.add_row(cluster)
         elif self.training_function == self.kdtree :
-            pass
-    
+            self.root = kdtree(self, 0, len(self.table.rows))
+
+    def test(self, row) :
+        if self.predication_function == self.knn_kmeans:
+            predicted_class = knn_kmeans(row)
+                        
+    Node = collections.namedtuple("Node", 'point axis left right')
     def kmeans(self, t, batch_size) :
         if self.clusters is None:
             c = [randint(0, len(self.table.rows)) for _ in range(0, self.k)]
@@ -53,8 +60,13 @@ class KNN :
                 self.clusters[dist[i][1]] = new_center
 
 
-    def kdtree(self, row) :
-        pass
+    def kdtree(self, start, end, axis = 0) :
+        if (start == end)
+            return None;
+        self.table.rows[start:end].sort(key = lambda x: x[axis])
+        median = len(self.table.rows)//2
+        median_point = self.table.rows[median_index]
+        return Node( median_point, axis, kdtree(start, median, axis + 1), kdtree(median + 1, end, axis + 1))
 
     def knn(self, row) :
         distances = [(self.table.row_distance(row, data), data[-1]) for data in self.table.rows]
@@ -70,6 +82,28 @@ class KNN :
             if classCounts[max_class] < existing_count + 1 :
                 max_class = cl
         return max_class
+
+    def knn_kmeans(self, row) :
+        best = [None, float('inf')]
+
+        def recursive_search(here):
+            if here is None:
+                return
+            point, axis, left, right = here
+
+            here_sd = self.table.row_distance(point, row)
+            if here_sd < best[2]:
+                best[:] = point, here_sd
+
+            diff = row[axis] - point[axis]
+            close, away = (left, right) if diff <= 0 else (right, left)
+
+            recursive_search(close)
+            if diff ** 2 < best[2]:
+                recursive_search(away)
+
+        recursive_search(self.root)
+        return best[0][-1]
 
 '''
 python <dataset> <optimization>
