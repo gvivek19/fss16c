@@ -6,18 +6,19 @@ class Table :
         self.rows = []
         self.cols = []
         self.headers = []
-        filetype = fileName.split(".")[-1]
-        if filetype == "arff" :
-            self.rowsGenerator = ARFFReader.ARFFReader(fileName).read()
-        elif filetype == "csv" :
-            self.rowsGenerator = CSVReader.CSVReader(fileName).read()
-        if fileType != None :
+        if fileName is not None:
+            filetype = fileName.split(".")[-1]
+            if filetype == "arff" :
+                self.rowsGenerator = ARFFReader.ARFFReader(fileName).read()
+            elif filetype == "csv" :
+                self.rowsGenerator = CSVReader.CSVReader(fileName).read()
             self.generateTable()
 
     def add_row(self, row) :
-        if self.headers is None :
+        if len(self.headers) == 0:
             index = 0
             for val in row :
+                self.headers.append(index)
                 if type(val) is int or type(val) is float:
                     self.cols.append(Num.Num())
                     self.cols[index].add(val)
@@ -25,6 +26,7 @@ class Table :
                     self.cols.append(Sym.Sym())
                     self.cols[index].add(val)
                 index += 1
+            self.rows.append(row)
         else :
             self.rows.append(row)
             index = 0
@@ -64,7 +66,7 @@ class Table :
         index = 0
         for index in xrange(len(self.cols) - 1):
             col = self.cols[index]
-            distance += (col.dist(row1[index], row2[index]))
+            distance += (col.dist(row1[index], row2[index]) ** 2)
         return math.sqrt(distance)
 
     def find_nearest(self, row) :
