@@ -1,18 +1,8 @@
-from table import Table
-from table import Column
-
 def less(a, b):
     return a < b
 
 def more(a, b):
     return a > b
-
-def clone(table):
-    newTable = Table()
-    for col in table.cols:
-        c = Column(col.pos, col.name)
-        newTable.cols += [c]
-    return newTable
 
 def showResults(predictions):
     print "\n=== Predictions on test data ===\n"

@@ -52,7 +52,7 @@ class Column:
     
     def dist(self, row1, row2):
         return self.col.dist(row1, row2)
-        
+
 class Table :
     def __init__(self, fileName=None):
         self.rows = []
@@ -77,11 +77,13 @@ class Table :
                 self.cols += [col]
             row = Row(row)
             self.rows += [row]
+            return row.rid
         else :
             row = Row(row)
             self.rows += [row]
             for i, val in enumerate(row) :
                 self.cols[i].add(val)
+            return row.rid
 
     def generateTable(self):
         headers = self.rowsGenerator.next()
@@ -120,6 +122,12 @@ class Table :
     def find_furthest(self, row) :
         return self.find_best(row, 10**-32, MyUtils.more)
 
+def clone(table):
+    newTable = Table()
+    for col in table.cols:
+        c = Column(col.pos, col.name)
+        newTable.cols += [c]
+    return newTable
 
 if __name__ == "__main__":
     table = Table(sys.argv[1])

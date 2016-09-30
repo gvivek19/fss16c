@@ -1,4 +1,6 @@
+from __future__ import division
 import math
+
 def max(x,y) : return x if x>y else y
 def min(x,y) : return x if x<y else y
 
@@ -23,7 +25,7 @@ class Num:
         i.m2  = max(0,i.m2 - delta*(x - i.mu))
     
     def sd(i):
-        return 0 if i.n <= 2 else (i.m2/(i.n - 1))**0.5
+        return 0 if i.n < 2 else (i.m2/(i.n - 1))**0.5
     
     def show(i):
         print "Mean : " + str(i.mu) + "\tStandard Deviation : " + str(i.sd())
@@ -42,6 +44,10 @@ class Num:
         
     def like(i,x,*_):
         var   = i.sd()**2
-        denom = (2*math.pi*var)**.5
-        num   = math.exp(-(x-i.mu)**2/(2*var))
-        return num/denom
+        result = 1 if x == i.mu else 0.001
+        if var != 0:
+            denom = (2*math.pi*var)**.5
+            num   = math.exp(-(x-i.mu)**2/(2*var))
+            result = num / denom
+            result = result if result < 1 else 1
+        return result if result > 0 else 10**-32
