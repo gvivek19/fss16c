@@ -1,100 +1,137 @@
 import sys, math
-import Num, Sym, CSVReader, ARFFReader
+import Num, Sym, CSVReader, ARFFReader, MyUtils
+
+class Row :
+    rid = 0
+    def __init__(self, values):
+        self.rid = Row.rid = Row.rid + 1
+        self.contents = values
+        
+    def __repr__(self):
+        return '#%s,%s' % (self.rid, self.contents)
+        
+    def __getitem__(self, key):
+        return self.contents[key]
+        
+    def __setitem__(self, key, value): 
+        self.contents[key] = value
+        
+    def __len__(self):
+        return len(self.contents)
+        
+    def __hash__(self):
+        return self.rid 
+        
+    def __eq__(self, other): 
+        return self.rid == other.rid
+        
+    def __ne__(self, other): 
+        return not self.__eq__(other)
+        
+    def __str__(self):
+        return str(self.contents)
+    
+class Column:
+    UNKNOWN = "?"
+    def __init__(self, index, name):
+        self.name = name or index
+        self.name = str(self.name)
+        self.col = None
+        self.pos = index
+        
+    def add(self, val) :
+        if val != Column.UNKNOWN:
+            if self.col is None:
+                val, valtype = self.what(val)
+                self.col = valtype()
+            self.col.add(val)
+    
+    def what(self, val):
+        try: return float(val), Num.Num
+        except ValueError: return val, Sym.Sym
+    
+    def dist(self, row1, row2):
+        return self.col.dist(row1, row2)
 
 class Table :
     def __init__(self, fileName=None):
         self.rows = []
         self.cols = []
-        self.headers = []
         if fileName is not None:
-            filetype = fileName.split(".")[-1]
-            if filetype == "arff" :
-                self.rowsGenerator = ARFFReader.ARFFReader(fileName).read()
-            elif filetype == "csv" :
-                self.rowsGenerator = CSVReader.CSVReader(fileName).read()
-            self.generateTable()
-
-    def add_row(self, row) :
-        if len(self.headers) == 0:
-            index = 0
-            for val in row :
-                self.headers.append(index)
-                if type(val) is int or type(val) is float:
-                    self.cols.append(Num.Num())
-                    self.cols[index].add(val)
-                else:
-                    self.cols.append(Sym.Sym())
-                    self.cols[index].add(val)
-                index += 1
-            self.rows.append(row)
-        else :
-            self.rows.append(row)
-            index = 0
-            for val in row :
-                self.cols[index].add(val)
-                index += 1
+            self.fileToTable(fileName)
     
+    def fileToTable(self, fileName):
+        filetype = fileName.split(".")[-1]
+        if filetype == "arff" :
+            self.rowsGenerator = ARFFReader.ARFFReader(fileName).read()
+        elif filetype == "csv" :
+            self.rowsGenerator = CSVReader.CSVReader(fileName).read()
+        self.generateTable()
+    
+    
+    def add_row(self, row) :
+        if len(self.cols) == 0:
+            for index, val in enumerate(row) :
+                col = Column(index, None)
+                col.add(val)
+                self.cols += [col]
+            row = Row(row)
+            self.rows += [row]
+            return row.rid
+        else :
+            row = Row(row)
+            self.rows += [row]
+            for i, val in enumerate(row) :
+                self.cols[i].add(val)
+            return row.rid
+
     def generateTable(self):
-        self.headers = self.rowsGenerator.next()
-        self.rows.append(self.rowsGenerator.next())
-        index = 0
-        for val in self.rows[0] :
-            if type(val) is int or type(val) is float:
-                self.cols.append(Num.Num())
-                self.cols[index].add(val)
-            else:
-                self.cols.append(Sym.Sym())
-                self.cols[index].add(val)
-            index += 1
-
+        headers = self.rowsGenerator.next()
+        for i, val in enumerate(headers) :
+            col = Column(i, val)
+            self.cols += [ col ]
+        
         for row in self.rowsGenerator :
-            self.rows.append(row)
-            index = 0
-            for val in row:
-                self.cols[index].add(val)
-                index += 1
-
+            self.add_row(row)
+    
     def showStats(self) :
-        index = 0
         for col in self.cols :
-            print self.headers[index]
-            col.show()
-            index += 1
+            print col.name
+            col.col.show()
 
     def row_distance(self, row1, row2) :
         distance = 0
-        index = 0
-        for index in xrange(len(self.cols) - 1):
-            col = self.cols[index]
-            distance += (col.dist(row1[index], row2[index]) ** 2)
+        for col in self.cols[:-1]:
+            distance += (col.col.dist(row1[col.pos], row2[col.pos]) ** 2)
         return math.sqrt(distance)
-
+    
+    def find_best(self, row, init_dist, better):
+        output = None
+        distance = init_dist
+        for r in self.rows :
+            if r.rid != row.rid :
+                current_distance = self.row_distance(row, r)
+                if better(current_distance , distance) :
+                    distance = current_distance
+                    output = r
+        return output
+        
     def find_nearest(self, row) :
-        nearest = None
-        distance = 10**32
-        for r in self.rows:
-            if r != row:
-                current_distance = self.row_distance(row, r)
-                if distance >= current_distance :
-                    nearest = r
-                    distance = current_distance
-        return nearest
-
+        return self.find_best(row, 10**32, MyUtils.less)
+        
     def find_furthest(self, row) :
-        furthest = None
-        distance = 10**-32
-        for r in self.rows:
-            if r != row:
-                current_distance = self.row_distance(row, r)
-                #print r, current_distance
-                if distance <= current_distance:
-                    furthest = r
-                    distance = current_distance
-        return furthest
+        return self.find_best(row, 10**-32, MyUtils.more)
 
+def clone(table):
+    newTable = Table()
+    for col in table.cols:
+        c = Column(col.pos, col.name)
+        newTable.cols += [c]
+    return newTable
 
 if __name__ == "__main__":
     table = Table(sys.argv[1])
+    print table.showStats()
     print table.rows[0]
     print "Closest : ",table.find_nearest(table.rows[0])
     print "Furthest : ", table.find_furthest(table.rows[0])

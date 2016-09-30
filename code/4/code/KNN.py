@@ -1,100 +1,116 @@
-import sys, table, collections, math
-from random import randint
+import sys, table, collections, math, MyUtils
+import random
 from time import time
+import Num
 
 class KNN :
-    
-    def __init__(self, table, op_fun) :
-        self.prediction_function = self.knn
-        self.training_function = None
+    def __init__(self, table, k) :
         self.table = table
-        self.k = 5
-        self.Node = collections.namedtuple("Node", 'point axis left right')
-        if op_fun == "KDTree":
-            self.training_function = self.kdtree
-            self.prediction_function = self.knn_kmeans
-            self.k = min(len(self.table.cols) - 1, 10)
-            self.root = None
-        elif op_fun == "KMeans":
-            self.clusters = None
-            self.training_function = self.kmeans
-            self.k = 10
-            self.v = {}
-
-    def train(self) :
-        if self.training_function == self.kmeans :
-            self.training_function(100, 10)
-            self.table = table.Table()
-            for cluster in self.clusters :
-                print cluster
-                self.table.add_row(cluster)
-        elif self.training_function == self.kdtree :
-            self.root = self.kdtree(0, len(self.table.rows))
-
-    def test(self, row) :
-        return self.prediction_function(row)
+        self.k = k
     
     def knn(self, row) :
         distances = [(self.table.row_distance(row, data), data[-1]) for data in self.table.rows]
         distances = sorted(distances, key = lambda x : x[0])
         classCounts = {}
         max_class = None
-        for i in xrange(self.k) :
-            cl = distances[i][1]
-            if max_class == None:
+        for cl in distances[ : self.k] :
+            cl = cl[1]
+            if max_class is None:
                 max_class = cl
-            existing_count = classCounts.get(cl, 0)
-            classCounts[cl] = existing_count + 1
-            if classCounts[max_class] < existing_count + 1 :
+            count = classCounts.get(cl, 0)
+            classCounts[cl] = count = count + 1
+            if classCounts[max_class] < count :
                 max_class = cl
-        return max_class
+        return (row[-1], max_class)
     
-    def kmeans(self, t, batch_size) :
+    def train(self):
+        pass
+    
+    def predict(self, row) :
+        return self.knn(row)
+
+class KNNKMeans :
+    def __init__(self, table, batch_size, n, k):
+        self.clusters = None
+        self.table = table
+        self.batch_size = batch_size
+        self.iterations = len(self.table.rows) // self.batch_size
+        self.k = k
+        self.number_of_clusters = n
+        self.cluster_contents = {}
+    
+    def train(self):
+        self.kmeans()
+    
+    def kmeans(self) :
         if self.clusters is None:
-            self.clusters = []
-            c = [randint(0, len(self.table.rows) - 1) for _ in range(0, self.k)]
-            for i in c:
-                self.clusters.append(self.table.rows[i])
-        dist = {}
-
-        for h in range(0, t):
-            b = [randint(0, len(self.table.rows) - 1) for _ in range(0, batch_size)]
-            batch = []
-            for i in b:
-                row = self.table.rows[i]
-                for j in range(0, len(self.clusters)):
-                    cluster = self.clusters[j]
-                    if i not in dist:
-                        dist[i] = (self.table.row_distance(row, cluster), j)
+            self.clusters = table.Table()
+            c = random.sample(self.table.rows, self.number_of_clusters)
+            for i, con in enumerate(c):
+                r = self.clusters.add_row(con.contents)
+                self.cluster_contents[r] = (i, table.Table())
+                self.cluster_contents[r][1].add_row(con.contents)
+        
+        for h in xrange(self.iterations):
+            batch_start = h * self.batch_size
+            batch_end = batch_start + self.batch_size
+            batch_end = len(self.table.rows) if batch_end > len(self.table.rows) else batch_end
+            
+            batch = self.table.rows[batch_start : batch_end]
+            closest_centroid = {}
+            for row in batch:
+                close = self.clusters.find_nearest(row)
+                closest_centroid[row.rid] = close
+            
+            for row in batch:
+                center = closest_centroid[row.rid]
+                self.cluster_contents[center.rid][1].add_row(row)
+                
+                learning_rate = 1 / len(self.cluster_contents[center.rid][1].rows)
+                centroid = center.contents
+                
+                new_center = center[:]
+                for col in self.table.cols :
+                    if col.col.__class__ == Num.Num :
+                        new_center[col.pos] = (1 - learning_rate) * centroid[col.pos] + learning_rate * row[col.pos]
                     else :
-                        existing = dist[i]
-                        current = self.table.row_distance(row, cluster)
-                        if current < existing :
-                            dist[i] = (current, j)
-            for i in b:
-                center = self.clusters[dist[i][1]]
-                #print center
-                self.v[dist[i][1]] = self.v.get(dist[i][1], 0) + 1
-                rate = 1 / self.v[dist[i][1]]
-                new_center = [( 1 - rate ) * center[col] + rate * self.table.rows[i][col] for col in xrange(len(center))]
-                #print new_center
-                self.clusters[dist[i][1]] = new_center
+                        new_center[col.pos] = col.col.mode
+                
+                cluster_index = self.cluster_contents[center.rid][0]
+                self.clusters.rows[cluster_index][:] = new_center
 
+    def predict(self, row) :
+        nearest_cluster = self.clusters.find_nearest(row)
+        innerKNN = KNN(self.cluster_contents[nearest_cluster.rid][1], self.k)
+        return innerKNN.predict(row)
+        
+class KDTree :
+    def __init__(self, table, k, m):
+        self.table = table
+        self.k = min(len(self.table.cols) - 1, k)
+        self.m = m                     # Minimum number of examples required to split the node
+        self.root = None
+        self.Node = collections.namedtuple("Node", 'point axis left right')
+    
+    def train(self) :
+        self.root = self.kdtree(0, len(self.table.rows))
 
     def kdtree(self, start, end, axis = 0) :
-        if (start == end):
+        if (end - start <= self.m):
             return None
         if axis >= self.k:
             return None;
+        
         temp_rows = self.table.rows[start:end]
         sorted(temp_rows, key = lambda x: x[axis])
         self.table.rows[start:end] = temp_rows
-        median = len(temp_rows)//2
-        median_point = self.table.rows[median]
+        
+        median = len(temp_rows) // 2
+        median_point = self.table.rows[start + median]
         return self.Node( median_point, axis, self.kdtree(start, median, axis + 1), self.kdtree(median + 1, end, axis + 1))
 
     
-    def knn_kmeans(self, row) :
+    def predict(self, row) :
         best = [None, float('inf')]
 
         def recursive_search(here):
@@ -102,7 +118,7 @@ class KNN :
                 return
             point, axis, left, right = here
 
-            here_sd = self.table.row_distance(point, row)
+            here_sd = self.table.row_distance(point, row) ** 2
             if here_sd < best[1]:
                 best[:] = point, here_sd
             diff = self.table.cols[axis].dist(row[axis], point[axis])
@@ -113,40 +129,25 @@ class KNN :
                 recursive_search(away)
 
         recursive_search(self.root)
-        return best[0][-1]
+        return (row[-1], best[0][-1])
 
 '''
 python <training dataset> <testing dataset> <optimization>
 '''
 if __name__ == "__main__":
-    start_time = time()
     training_table = table.Table(sys.argv[1])
     optimization_func = None
     if len(sys.argv) > 3 :
         optimization_func = sys.argv[3]
-    knn = KNN(training_table, optimization_func)
-    knn.train()
+    learner = None
+    if optimization_func == "KMeans":
+        learner = KNNKMeans(training_table, 100, 20, 1)
+    elif optimization_func == "KDTree":
+        learner = KDTree(training_table, 10, 2)
+    else:
+        learner = KNN(training_table, 1)
+    learner.train()
+
     testing_table = table.Table(sys.argv[2])
-    print "\n=== Predictions on test data ===\n"
-    print " inst#     actual  predicted error prediction"
-    iteratorIndex = 1
-    classNumbers = {}
-    classNo = 1
-    for row in testing_table.rows:
-        predicted = knn.test(row)
-        expected = row[-1]
-        
-        if expected not in classNumbers:
-            classNumbers[expected] = classNo
-            classNo += 1
-        if predicted not in classNumbers:
-            classNumbers[predicted] = classNo
-            classNo += 1
-        temp1 = str(classNumbers[expected]) + ":" + str(expected)
-        temp2 = str(classNumbers[predicted]) + ":" + str(predicted)
-        prediction = (expected == predicted)
-        
-        print ("{: >6.0f}".format(iteratorIndex) + "{:>21}".format(temp1) + "{: >21}".format(temp2) + "{:>18.0f}".format(prediction))
-        iteratorIndex += 1
-    end_time = time()
-    #print "Total runtime : %d" % (end_time - start_time) 
+    predictions = [learner.predict(row) for row in testing_table.rows]
+    MyUtils.showResults(predictions)

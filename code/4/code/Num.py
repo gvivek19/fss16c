@@ -1,3 +1,6 @@
+from __future__ import division
+import math
+
 def max(x,y) : return x if x>y else y
 def min(x,y) : return x if x<y else y
 
@@ -38,3 +41,9 @@ class Num:
   
     def furthest(i,x) :
         return i.up if x <(i.up-i.lo)/2 else i.lo
+        
+    def like(i,x,*_):
+        var   = i.sd()**2
+        denom = (2*math.pi*var)**.5
+        num   = math.exp(-(x-i.mu)**2/(2*var))
+        return num/denom
