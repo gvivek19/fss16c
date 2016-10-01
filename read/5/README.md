@@ -14,7 +14,7 @@ ii4 Software Testing - It is the process of investigating a product or a service
 
 ##iii Notes
 
-iii1 Motivational statements: A lot of software companies have started releasing a new version of the product every 6 weeks or even lesser compared to the old 12 or 18-month release cycle. This paper performs an empirical study on the effect of a rapid release model on the QA process at Mozilla. 
+iii1 Motivational statements: This paper performs an empirical study on the effect of a rapid release model on the QA process at Mozilla. Specifically, the paper aims to answer questions regarding testing activity associated with rapid release models.
 
 iii2 Hypothesis: The paper seeks to answer a few questions by assuming the following hypothesis
  - Rapid Release(RR) cycles affect the amount of testing performed.
