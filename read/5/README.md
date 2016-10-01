@@ -1,6 +1,6 @@
 ##i Reference
 	
-On Rapid Releases and Software Testing
+Mika V. Mantyla, Foutse Khomh, Bram Adams, Emelie Engstrom and Kai Petersen, "On Rapid Releases and Software Testing",Software Maintenance (ICSM) 2013 29th IEEE International Conference 
 
 ##ii Keywords
 
