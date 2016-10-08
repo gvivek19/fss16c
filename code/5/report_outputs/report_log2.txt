@@ -1,0 +1,35 @@
+data/jedit-4.3.arff
+
+naivebayes 1
+naivebayes 2
+naivebayes 3
+naivebayes 4
+naivebayes 5
+real	0.08928
+
+knnkdtree 1
+knnkdtree 2
+knnkdtree 3
+knnkdtree 4
+knnkdtree 5
+real	0.51168
+
+knnkmeans 1
+knnkmeans 2
+knnkmeans 3
+knnkmeans 4
+knnkmeans 5
+real	0.53788
+
+pd
+rank ,         name ,    med   ,  iqr 
+----------------------------------------------------
+   1 ,   naivebayes ,      90  ,    60 (---------------|-         *   ), 0.00, 60.00, 90.00, 100.00, 100.00
+   1 ,    knnkdtree ,      92  ,   100 (               |            * ), 0.00,  0.00, 95.00, 100.00, 100.00
+   1 ,    knnkmeans ,      99  ,    40 (---------------|----         *), 0.00, 67.00, 99.00, 100.00, 100.00
+pf
+rank ,         name ,    med   ,  iqr 
+----------------------------------------------------
+   1 ,    knnkmeans ,       1  ,    20 (*--------------|------------- ), 0.00,  0.00,  1.00,  3.00, 100.00
+   1 ,    knnkdtree ,       1  ,    75 (*              |    --------- ), 0.00,  0.00,  1.00, 67.00, 100.00
+   1 ,   naivebayes ,      10  ,    10 (  *----------- |              ), 0.00,  0.00, 10.00, 10.00, 50.00

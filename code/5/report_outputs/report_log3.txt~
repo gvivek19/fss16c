@@ -1,0 +1,41 @@
+data/xerces-1.4.arff
+
+naivebayes 1
+naivebayes 2
+naivebayes 3
+naivebayes 4
+naivebayes 5
+sys	0.0048
+user	0.11632
+real	0.1164
+
+knnkdtree 1
+knnkdtree 2
+knnkdtree 3
+knnkdtree 4
+knnkdtree 5
+sys	0.0048
+user	0.672
+real	0.67472
+
+knnkmeans 1
+knnkmeans 2
+knnkmeans 3
+knnkmeans 4
+knnkmeans 5
+sys	0.00528
+user	0.73328
+real	0.7358
+
+pd
+rank ,         name ,    med   ,  iqr 
+----------------------------------------------------
+   1 ,    knnkdtree ,       0  ,    51 (*             -|------        ), 0.00,  0.00,  0.00, 48.00, 76.00
+   1 ,   naivebayes ,      33  ,   100 (         *     |              ), 0.00,  0.00, 33.00, 100.00, 100.00
+   1 ,    knnkmeans ,      67  ,   100 (-------        |    *         ), 0.00, 25.00, 67.00, 97.00, 100.00
+pf
+rank ,         name ,    med   ,  iqr 
+----------------------------------------------------
+   1 ,    knnkmeans ,       1  ,     2 (*--            |              ), 0.00,  0.00,  1.00,  2.00,  5.00
+   1 ,    knnkdtree ,       1  ,     4 (*-------       |              ), 0.00,  0.00,  1.00,  3.00, 13.00
+   1 ,   naivebayes ,      10  ,    20 (      * -------|--            ), 0.00,  0.00, 10.00, 14.00, 29.00

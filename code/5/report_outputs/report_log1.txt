@@ -1,0 +1,35 @@
+data/arc.arff
+
+naivebayes 1
+naivebayes 2
+naivebayes 3
+naivebayes 4
+naivebayes 5
+real	0.05396
+
+knnkdtree 1
+knnkdtree 2
+knnkdtree 3
+knnkdtree 4
+knnkdtree 5
+real	0.20468
+
+knnkmeans 1
+knnkmeans 2
+knnkmeans 3
+knnkmeans 4
+knnkmeans 5
+real	0.19456
+
+pd
+rank ,         name ,    med   ,  iqr 
+----------------------------------------------------
+   1 ,    knnkdtree ,      67  ,    92 (-------        |    *     --- ), 0.00, 25.00, 67.00, 90.00, 98.00
+   1 ,   naivebayes ,      78  ,    90 (-------------  |       *  --- ), 0.00, 44.00, 78.00, 89.00, 100.00
+   1 ,    knnkmeans ,      81  ,    68 (-------------- |        *  -- ), 0.00, 50.00, 83.00, 91.00, 98.00
+pf
+rank ,         name ,    med   ,  iqr 
+----------------------------------------------------
+   1 ,    knnkmeans ,       5  ,    23 (  *  ----------|----          ), 0.00,  2.00,  7.00, 20.00, 67.00
+   1 ,    knnkdtree ,       9  ,    48 (  *      ------|--------      ), 0.00,  3.00,  9.00, 33.00, 83.00
+   1 ,   naivebayes ,      10  ,    22 (  *  ----------|------------- ), 0.00,  0.00, 10.00, 20.00, 100.00
