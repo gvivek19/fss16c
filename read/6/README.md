@@ -1,6 +1,6 @@
 ##i Reference
 
-Security and Rapid-Release in Firefox
+Sandy Clark, Micheal Collis, Matt Blaze and Jonathan M. Smith, "Security and Rapid-Release in Firefox", Proceedings of the 2014 ACM SIGSAC Conference on Computer and Communications Security
 
 
 
