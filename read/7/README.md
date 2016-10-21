@@ -1,4 +1,3 @@
-#Read 7
 ##i Reference
 Souza, Rodrigo, Christina Chavez, and Roberto A. Bittencourt. "Rapid releases and patch backouts: A software analytics approach." IEEE Software, 2015
 
