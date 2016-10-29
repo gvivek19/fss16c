@@ -7,7 +7,7 @@ class KNN :
     def __init__(self, table, k) :
         self.table = table
         self.k = k
-
+    
     def knn(self, row) :
         distances = [(self.table.row_distance(row, data), data[-1]) for data in self.table.rows]
         distances = sorted(distances, key = lambda x : x[0])
@@ -22,10 +22,10 @@ class KNN :
             if classCounts[max_class] < count :
                 max_class = cl
         return (row[-1], max_class)
-
+    
     def train(self):
         pass
-
+    
     def predict(self, row) :
         return self.knn(row)
 
@@ -38,10 +38,10 @@ class KNNKMeans :
         self.k = k
         self.number_of_clusters = n
         self.cluster_contents = {}
-
+    
     def train(self):
         self.kmeans()
-
+    
     def kmeans(self) :
         if self.clusters is None:
             self.clusters = table.Table()
@@ -50,32 +50,32 @@ class KNNKMeans :
                 r = self.clusters.add_row(con.contents)
                 self.cluster_contents[r] = (i, table.Table())
                 self.cluster_contents[r][1].add_row(con.contents)
-
+        
         for h in xrange(self.iterations):
             batch_start = h * self.batch_size
             batch_end = batch_start + self.batch_size
             batch_end = len(self.table.rows) if batch_end > len(self.table.rows) else batch_end
-
+            
             batch = self.table.rows[batch_start : batch_end]
             closest_centroid = {}
             for row in batch:
                 close = self.clusters.find_nearest(row)
                 closest_centroid[row.rid] = close
-
+            
             for row in batch:
                 center = closest_centroid[row.rid]
                 self.cluster_contents[center.rid][1].add_row(row)
-
+                
                 learning_rate = 1 / len(self.cluster_contents[center.rid][1].rows)
                 centroid = center.contents
-
+                
                 new_center = center[:]
                 for col in self.table.cols :
                     if col.col.__class__ == Num.Num :
                         new_center[col.pos] = (1 - learning_rate) * centroid[col.pos] + learning_rate * row[col.pos]
                     else :
                         new_center[col.pos] = col.col.mode
-
+                
                 cluster_index = self.cluster_contents[center.rid][0]
                 self.clusters.rows[cluster_index][:] = new_center
 
@@ -83,7 +83,7 @@ class KNNKMeans :
         nearest_cluster = self.clusters.find_nearest(row)
         innerKNN = KNN(self.cluster_contents[nearest_cluster.rid][1], self.k)
         return innerKNN.predict(row)
-
+        
 class KDTree :
     def __init__(self, table, k, m):
         self.table = table
@@ -91,7 +91,7 @@ class KDTree :
         self.m = m                     # Minimum number of examples required to split the node
         self.root = None
         self.Node = collections.namedtuple("Node", 'point axis left right')
-
+    
     def train(self) :
         self.root = self.kdtree(0, len(self.table.rows))
 
@@ -100,16 +100,16 @@ class KDTree :
             return None
         if axis >= self.k:
             return None;
-
+        
         temp_rows = self.table.rows[start:end]
         sorted(temp_rows, key = lambda x: x[axis])
         self.table.rows[start:end] = temp_rows
-
+        
         median = len(temp_rows) // 2
         median_point = self.table.rows[start + median]
         return self.Node( median_point, axis, self.kdtree(start, median, axis + 1), self.kdtree(median + 1, end, axis + 1))
 
-
+    
     def predict(self, row) :
         best = [None, float('inf')]
 
