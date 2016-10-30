@@ -2,17 +2,16 @@ from __future__ import division
 import copy
 from table import Table
 from table import Column
-import MyUtils, sys, table, Num, Sym
+import MyUtils, sys, table
 
 class NaiveBayesD:
-    def __init__(self, data, style):
+    def __init__(self, data):
         self.k = 1
         self.m = 2
         
         self.table = data
         self.tables = {}
         self.create_class_tables()
-        self.discretize(style)
         
     
     def create_class_tables(self):
@@ -22,13 +21,7 @@ class NaiveBayesD:
             existing_table.add_row(row.contents)
             self.tables[row_class] = existing_table
         
-       
-    def discretize(self, style):
-    	for c,t in self.tables.items():
-    		for cols in t.cols[:-1]:
-    			if cols.col.__class__ == Num.Num:
-    				cols.col.discretize(10, style)
-
+        
     def predict(self, row):
         all = len(self.table.rows);
         guess, best, nh, k = None, -1*10**32, len(self.tables), self.k
@@ -49,14 +42,8 @@ class NaiveBayesD:
     def predict_all(self, test_data):
         results = [self.predict(row) for row in test_data.rows[:10]]
         return results
-
-
+        
 if __name__ == "__main__":
-	training_data = Table(sys.argv[1])
-	testing_data = Table(sys.argv[2])
-	binner = sys.argv[3]
-
-
-	nb = NaiveBayesD(training_data, binner)
-	predictions = nb.predict_all(testing_data)
-	MyUtils.showResults(predictions)
+    nb = NaiveBayesD(Table(sys.argv[1]))
+    predictions = nb.predict_all(Table(sys.argv[2]))
+    MyUtils.showResults(predictions);

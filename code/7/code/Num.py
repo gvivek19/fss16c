@@ -58,7 +58,7 @@ class Num:
         
     def like(i,x, prior):
         if i.binned:
-            return i.symClass.like(x, prior)
+            return i.symClass.like(i.getbinClass(x), prior)
         var   = i.sd()**2
         result = 1 if x == i.mu else 0.001
         if var != 0:
@@ -67,14 +67,15 @@ class Num:
             result = num / denom
             result = result if result < 1 else 1
         return result if result > 0 else 10**-32
-
+'''
     def discretize(self, policy, nbins):
+        print 'ehensdf'
         if policy == 'width':
             self.equalwidth(nbins)
         elif policy == 'frequency':
             self.equalfrequency(nbins)
         self.binned = True
-
+'''
     def equalwidth(self, nbins):
         binrange = (self.up - self.lo) / nbins
         for i in range(1, nbins + 1) :
@@ -122,3 +123,11 @@ class Num:
             lowrange = 0 if k == 0 else i.binMaps["bin" + str(k)][1] + 1
             i.binMaps["bin" + str(k + 1)] = (lowrange, maxval)
         print i.binMaps
+
+    def getbinClass(i, x) :
+        for k,v in self.binMaps.items() :
+            l = v[0]
+            u = v[1]
+            if l <= x and x <= u :
+                return k
+        return "bin1"
