@@ -40,7 +40,7 @@ class NaiveBayes:
         return (row[-1], guess)
     
     def predict_all(self, test_data):
-        results = [self.predict(row) for row in test_data.rows[:10]]
+        results = [self.predict(row) for row in test_data.rows]
         return results
         
 if __name__ == "__main__":

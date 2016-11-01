@@ -71,6 +71,8 @@ class Table :
 
     def next_row(self):
         self.current_row += 1
+        if self.current_row >= len(self.rows):
+            self.current_row = 0
         return self.rows[self.current_row]
 
     def add_row(self, row) :

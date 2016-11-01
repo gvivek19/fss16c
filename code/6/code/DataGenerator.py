@@ -7,7 +7,7 @@ class DataGenerator:
     def __init__(self, data):
         self.table = data
         self.tables = {}
-        self.create_class_tables
+        self.create_class_tables()
         self.k = 1;
 
     def create_class_tables(self) :
@@ -17,10 +17,14 @@ class DataGenerator:
             existing_table.add_row(row.contents)
             self.tables[row_class] = existing_table
 
+    def get_row_count(self):
+        return len(self.table.rows)
+
     def get_next(self):
-        class_variables = list(tables.keys());
+        class_variables = list(self.tables.keys());
+
         if self.k <= 1000:
-            randnum = randint(0,1)
+            randnum = randint(0, 1)
             rClass = class_variables[randnum]
         else:
             randnum = randint(1, 10)
@@ -30,30 +34,7 @@ class DataGenerator:
             elif randnum >= 5:
                 r = 2
             rClass = class_variables[r]
-        return self.tables[rClass].next_row
 
-    def populate_table(self, table):
-        for i in range(0, 100):
-            table.add_row(self.getNext())
-
-    def copy_table(self, table1, table2):
-        for i in range(0, 100):
-            table1.add_row(table2.rows[i]);
-
-    def incremental_NB(self):
-        size = len(tables.rows)
-        eras = size / 100
-        train_table = table.clone(self.table)
-        populate_table(train_table)
-        for i in range(0, eras):
-            nb = NaiveBayes(train_table)
-            test_table = table.clone(self.table)
-            populate_table(test_table)
-            results = nb.predict_all(test_table)
-            #TODO compute recall
-            copytable(train_table, test_table)
-
-
-
-
-if __name__ == "__main__":
+        self.k += 1
+        r = self.tables[rClass].next_row()
+        return r.contents

@@ -37,10 +37,10 @@ class NaiveBayes:
             vals[this] = like
             if like > best:
                 guess, best = this, like
-        return (row[-1], guess)
+        return (row[-1], guess, best)
     
     def predict_all(self, test_data):
-        results = [self.predict(row) for row in test_data.rows[:10]]
+        results = [self.predict(row) for row in test_data.rows]
         return results
         
 if __name__ == "__main__":
