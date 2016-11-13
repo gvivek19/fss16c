@@ -2,14 +2,14 @@ import re
 class ARFFReader :
     def __init__(self, fileName):
         self.fileName = fileName
-    
+
     def rows(self, prep       = None,
               whitespace = '[\n\r\t]',
               comments   = '#.*',
               sep        = ","
               ):
         """
-        Walk down comma seperated values, 
+        Walk down comma seperated values,
         skipping bad white space and blank lines
         """
         doomed = re.compile('(' + whitespace + '|' +  comments + ')')
@@ -33,16 +33,16 @@ class ARFFReader :
             except:
                 try: return float(x)
                 except ValueError: return x
-        
+
         rowsGenerator = self.rows(prep = atoms)
         header = []
         for row in rowsGenerator:
-            if "@data" in row[0].lower():
+            if "@data" in str(row[0]).lower():
                 break
-            elif "@attribute" in row[0].lower():
+            elif "@attribute" in str(row[0]).lower():
                 attr = row[0].split(" ")[1]
                 header.append(attr)
         yield header
-        
+
         for row in rowsGenerator:
             yield row
