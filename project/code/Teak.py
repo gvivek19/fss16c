@@ -12,10 +12,10 @@ class Tree:
         self.left = left
         self.right = right
         self.effort_values = []
-        
+
         if left != None:
             self.effort_values += left.effort_values
-            
+
         if right != None:
             self.effort_values += right.effort_values
 
@@ -49,13 +49,13 @@ class Teak :
     def centroid(self, row1, row2):
         result = []
         row1_contents = row1.contents
-        
+
         if (row2 is not None):
             row2_contents = row2.contents
         else:
             row2_contents = [0 for i in range(0,len(row1))]
         for i in range(0,len(row1)):
-            if isinstance(row1_contents[i], int) and isinstance(row2_contents[i], int) : 
+            if isinstance(row1_contents[i], int) and isinstance(row2_contents[i], int) :
             	result.append((row1_contents[i] + row2_contents[i]) / 2)
             else :
             	c = random.random()
@@ -120,16 +120,16 @@ class Teak :
         num_root = Num.Num()
         num_left = Num.Num()
         num_right = Num.Num()
-        
+
         for effort in tree.effort_values:
             num_root.add(effort)
-        
+
         for effort in tree.left.effort_values:
             num_left.add(effort)
-        
+
         for effort in tree.right.effort_values:
             num_right.add(effort)
-        
+
         num_root_sd = num_root.sd()
         num_left_sd = num_left.sd()
         num_right_sd = num_right.sd()
@@ -149,7 +149,7 @@ class Teak :
         self.tree2table(self, table, tree.right)
 
     def train(self):
-		cluster_tree = self.gac(self.table)
+        cluster_tree = self.gac(self.table)
 		self.printTree(cluster_tree)
 		pruned_tree = self.prune(cluster_tree)
 		#pruned_table = table.clone(self.table)
@@ -159,14 +159,22 @@ class Teak :
 		#print self.model
 
     def printTree(self, tree) :
-	if tree is None:
-	    return
-	print self.tables[tree.table_id].rows[tree.row_index]
-	self.printTree(tree.left)
-	self.printTree(tree.right)
+        if tree is None:
+	       return
+	    print self.tables[tree.table_id].rows[tree.row_index]
+	    self.printTree(tree.left)
+	    self.printTree(tree.right)
+
+    def get_tree_row(self, node):
+        return self.tables[node.table_id].rows[node.row_index].contents
 
     def predict_helper(self, tree, row):
-        pass
+        if (len(tree.effort_values) <= self.k):
+            return get_tree_row(tree)[-1]
+        if row_distance(self.get_tree_row(tree.left), row) < row_distance(self.get_tree_row(tree.right), row) :
+            self.predict_helper(tree.left, row)
+        else:
+            predict_helper(self, tree.right, row)
 
     def predict(self, row):
         tree = self.model
