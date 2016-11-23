@@ -3,6 +3,7 @@ import random
 from time import time
 import Num
 import ABE
+import numpy
 
 class Tree:
     def __init__(self, table_id, row_id, row_index, left, right):
@@ -103,7 +104,6 @@ class Teak :
             new_trees.append(new_tree)
 
         self.tables.append(new_table)
-        print "NTL", len(new_trees)
         return self.gac_helper(new_table, new_trees)
 
     def gac(self, table) :
@@ -115,7 +115,7 @@ class Teak :
         return self.gac_helper(table, trees)
 
     def prune(self, tree):
-        if tree == None or tree.left == None and tree.right == None:
+        if tree == None or (tree.left == None and tree.right == None):
             return
         num_root = Num.Num()
         num_left = Num.Num()
@@ -124,62 +124,70 @@ class Teak :
         for effort in tree.effort_values:
             num_root.add(effort)
 
-        for effort in tree.left.effort_values:
-            num_left.add(effort)
+        if tree.left is not None :
+            for effort in tree.left.effort_values:
+                num_left.add(effort)
 
-        for effort in tree.right.effort_values:
-            num_right.add(effort)
+        if tree.right is not None:
+            for effort in tree.right.effort_values:
+                num_right.add(effort)
 
-        num_root_sd = num_root.sd()
-        num_left_sd = num_left.sd()
-        num_right_sd = num_right.sd()
-        if num_root_sd < num_left_sd:
+        num_root_var = num_root.sd()
+        num_left_var = num_left.sd()
+        num_right_var = num_right.sd()
+
+        max_var = num_root_var if num_root_var > num_left_var else num_left_var
+        max_var = max_var if max_var > num_right_var else num_right_var
+
+        R = random.random()
+        metric = (R ** 9) * max_var
+
+        if num_left_var > num_root_var + metric :
             tree.left = None
-        if num_root_sd < num_right_sd:
+
+        if num_right_var > num_root_var + metric:
             tree.right = None
+
         self.prune(tree.left)
         self.prune(tree.right)
+
+        return tree
 
     def tree2table(self, table, tree):
     	if tree is None:
     		return
     	if tree.left is None and tree.right is None:
-            table.append(self.table.rows[tree.row_index])
-        self.tree2table(self, table, tree.left)
-        self.tree2table(self, table, tree.right)
+            table.add_row(self.table.rows[tree.row_index])
+        self.tree2table(table, tree.left)
+        self.tree2table(table, tree.right)
 
     def train(self):
         cluster_tree = self.gac(self.table)
-		self.printTree(cluster_tree)
-		pruned_tree = self.prune(cluster_tree)
-		#pruned_table = table.clone(self.table)
-		#self.tree2table(pruned_table, pruned_tree)
-		#print pruned_table.rows
-		#self.model = self.gac(pruned_table)
-		#print self.model
-
-    def printTree(self, tree) :
-        if tree is None:
-	       return
-	    print self.tables[tree.table_id].rows[tree.row_index]
-	    self.printTree(tree.left)
-	    self.printTree(tree.right)
+        pruned_tree = self.prune(cluster_tree)
+        pruned_table = table.clone(self.table)
+        self.tree2table(pruned_table, pruned_tree)
+        self.model = self.gac(pruned_table)
 
     def get_tree_row(self, node):
         return self.tables[node.table_id].rows[node.row_index].contents
 
     def predict_helper(self, tree, row):
         if (len(tree.effort_values) <= self.k):
-            return get_tree_row(tree)[-1]
-        if row_distance(self.get_tree_row(tree.left), row) < row_distance(self.get_tree_row(tree.right), row) :
-            self.predict_helper(tree.left, row)
+            return self.get_tree_row(tree)[-1]
+        if self.row_distance(self.get_tree_row(tree.left), row) < self.row_distance(self.get_tree_row(tree.right), row) :
+            return self.predict_helper(tree.left, row)
         else:
-            predict_helper(self, tree.right, row)
+            return self.predict_helper(tree.right, row)
 
     def predict(self, row):
         tree = self.model
-        return predict_helper(tree, row)
+        return self.predict_helper(tree, row)
+
+    def predict_all(self, rows) :
+        return [(row[-1], self.predict(row.contents)) for row in rows]
 
 if __name__ == '__main__':
-	team = Teak(table.Table(sys.argv[1]), 3)
-	team.train()
+    team = Teak(table.Table(sys.argv[1]), 3)
+    team.train()
+    testing_data = table.Table(sys.argv[2])
+    results = team.predict_all(testing_data.rows)
