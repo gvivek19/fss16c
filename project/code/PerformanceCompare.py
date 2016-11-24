@@ -1,6 +1,6 @@
 from ARFFReader import ARFFReader
 from CSVReader import CSVReader
-from KNN import KNN
+import ABE, Teak, linear_regression, neural_network
 import stats
 import sys
 import random
@@ -8,8 +8,8 @@ import os
 from abcd import Abcd
 import table
 
-m = 1
-n = 1
+m = 5
+n = 5
 
 def generateDataFiles(filename) :
     currdir = os.getcwd() + "/temp1"
@@ -71,10 +71,10 @@ def runLearner() :
             print str(i) + "_" + str(j)
             traintable = table.Table(path + 'train' + str(i) + "_" + str(j) + ".arff")
             testtable = table.Table(path + 'test' + str(i) + "_" + str(j) + ".arff")
-            a = KNN(traintable, 1)
+            a = ABE(traintable, 1)
 
-            results = a.predict_all(testtable)
-
+            results = a.predict_all(testtable, True)
+            print results
             log = None
             for result in results:
                 one, two= result[0], result[1]
@@ -102,7 +102,14 @@ def analyzeReport(reports, wanted) :
     stats.rdivDemo( [ [k] + v for k,v in pd.items() ] )
     stats.rdivDemo( [ [k] + v for k,v in pf.items() ] )
 
+def runLearners(train, test):
+    learners = [Teak.Teak(train, 3), linear_regression.linear_regression(train), neural_network.neural_network(train), ABE.ABE(train, 1)]
+    for learner in learners:
+        learner.train()
+        print learner.predict_all(test)
+
 if __name__ == '__main__':
-    generateDataFiles(sys.argv[1])
-    report = runLearner()
-    analyzeReport(report, 0)
+    #generateDataFiles(sys.argv[1])
+    #report = runLearner()
+    #analyzeReport(report, 0)
+    #runLearners(table.Table(sys.argv[1]), table.Table(sys.argv[1]))

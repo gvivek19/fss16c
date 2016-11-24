@@ -2,7 +2,6 @@ import sys, table, collections, math, MyUtils
 import random
 from time import time
 import Num
-import ABE
 import numpy
 
 class Tree:
@@ -181,13 +180,13 @@ class Teak :
 
     def predict(self, row):
         tree = self.model
-        return self.predict_helper(tree, row)
+        return (row[-1], self.predict_helper(tree, row))
 
-    def predict_all(self, rows) :
-        return [(row[-1], self.predict(row.contents)) for row in rows]
+    def predict_all(self, test_table) :
+        return [ self.predict(row.contents) for row in test_table.rows]
 
 if __name__ == '__main__':
     team = Teak(table.Table(sys.argv[1]), 3)
     team.train()
     testing_data = table.Table(sys.argv[2])
-    results = team.predict_all(testing_data.rows)
+    results = team.predict_all(testing_data)
