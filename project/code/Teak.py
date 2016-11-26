@@ -78,11 +78,9 @@ class Teak :
     def gac_helper(self, curr_table, trees) :
         if len(trees) == 1:
             return trees[0]
-
         rows = []
         for row in curr_table.rows:
             rows.append(row)
-
         new_table = table.clone(curr_table)
         new_trees = []
         row_index = 0
@@ -190,3 +188,4 @@ if __name__ == '__main__':
     team.train()
     testing_data = table.Table(sys.argv[2])
     results = team.predict_all(testing_data)
+    print results
