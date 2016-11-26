@@ -7,11 +7,21 @@ import random
 import os
 from abcd import Abcd
 import table
+from error import Error
+import config
 
 class cross_validation:
     def __init__(self):
-        self.m = 1
-        self.n = 5
+        self.m = config.crossval_m
+        self.n = config.crossval_n
+        self.loocv = (self.n == 'LOOCV')
+
+        if config.ar :
+            self.ar_file = open(config.error_metrics + "_ar", "w")
+        if config.mr :
+            self.mr_file = open(config.error_metrics + "_mr", "w")
+        if config.pred :
+            self.pred_file = open(config.error_metrics + "_pred", "w")
 
     def generate_data_files(self, data_filename) :
         currdir = os.getcwd() + "/temp1"
@@ -40,6 +50,9 @@ class cross_validation:
         for row in rowsGenerator :
             dataRows.append(row)
             length += 1
+
+        if self.loocv :
+            self.n = length
 
         for i in xrange(self.m) :
             random.shuffle(dataRows)
@@ -109,44 +122,53 @@ class cross_validation:
         return self.run_abe_k(train, test, 16)
 
     def run_learners(self):
-        learners = [self.run_teak, self.run_lr, self.run_nnet, self.run_abe_1, self.run_abe_2, self.run_abe_4, self.run_abe_8, self.run_abe_16]
+        learners = []
+        teak = True
+        abe = True
+        abe_k = [1,2,4,8,16]
+        neuralnet = True
+        lregression = True
+
+        if config.teak :
+            learners.append(self.run_teak)
+        if config.abe:
+            if 1 in config.abe_k:
+                learners.append(self.run_abe_1)
+            if 2 in config.abe_k:
+                learners.append(self.run_abe_2)
+            if 4 in config.abe_k:
+                learners.append(self.run_abe_4)
+            if 8 in config.abe_k:
+                learners.append(self.run_abe_8)
+            if 16 in config.abe_k:
+                learners.append(self.run_abe_16)
+        if config.neuralnet:
+            learners.append(self.run_nnet)
+        if config.lregression:
+            learners.append(self.run_lr)
+
         for learner in learners:
             self.run_learner(learner)
 
     def run_learner(self, learner) :
+        print learner.__name__
         path = os.getcwd() + '/temp1/'
-        report = []
         for i in xrange(self.m) :
             for j in xrange(self.n) :
-                print str(i) + "_" + str(j)
-
                 train_table = table.Table(path + 'train' + str(i) + "_" + str(j) + ".arff")
                 test_table = table.Table(path + 'test' + str(i) + "_" + str(j) + ".arff")
 
-                learner(train_table, test_table)
-        return report
-
-    def analyze_report(self, reports) :
-        pd = {} #0 8
-        pf = {} #0 9
-        for report in reports :
-            for entry in report :
-                z = pd.get(entry[-1], [])
-                z.append(entry[8])
-                pd[entry[0]] = z
-
-                z = pf.get(entry[-1], [])
-                z.append(entry[9])
-                pf[entry[0]] = z
-
-        stats.rdivDemo( [ [k] + v for k,v in pd.items() ] )
-        stats.rdivDemo( [ [k] + v for k,v in pf.items() ] )
+                results = learner(train_table, test_table)
+                if config.ar:
+                    self.ar_file.write("%s,%.4f\n" %(learner.__name__, Error.absolute_residual_error(results)))
+                if config.mr:
+                    self.mr_file.write("%s,%.4f\n" %(learner.__name__, Error.magnitude_relative_error(results) * 100))
+                if config.pred:
+                    self.pred_file.write("%s,%.4f\n" %(learner.__name__, Error.pred(results)))
 
 
-if __name__ == '__main__':
-    cv = cross_validation()
-    cv.generate_data_files(sys.argv[1])
-    cv.run_learners()
-    #report = runLearner()
-    #analyzeReport(report, 0)
-    #runLearners(table.Table(sys.argv[1]), table.Table(sys.argv[1]))
+    @staticmethod
+    def run_cross_validation(dataset):
+        cv = cross_validation()
+        cv.generate_data_files(dataset)
+        cv.run_learners()

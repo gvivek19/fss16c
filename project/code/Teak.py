@@ -27,6 +27,8 @@ class Teak :
         self.k = k
 
     def row_distance(self, row1, row2) :
+        if row1 is None or row2 is None:
+            return 10**32
         distance = 0
         for col in self.table.cols[:-1]:
             distance += (col.col.dist(row1[col.pos], row2[col.pos]) ** 2)
@@ -166,6 +168,8 @@ class Teak :
         self.model = self.gac(pruned_table)
 
     def get_tree_row(self, node):
+        if node is None :
+            return None
         return self.tables[node.table_id].rows[node.row_index].contents
 
     def predict_helper(self, tree, row):

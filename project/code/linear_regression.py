@@ -2,6 +2,8 @@ from sklearn import linear_model
 from table import Table
 from table import Column
 import sys
+from Num import Num
+from Sym import Sym
 
 class linear_regression :
     def __init__(self, train_table):
@@ -20,7 +22,10 @@ class linear_regression :
         for row in table.rows :
             for col in table.cols :
                 if row[col.pos] == Column.UNKNOWN :
-                    row[col.pos] = col.col.mu
+                    if isinstance(self.training_table.cols[col.pos].col, Num) :
+                        row[col.pos] = self.training_table.cols[col.pos].col.mu
+                    else :
+                        row[col.pos] = self.training_table.cols[col.pos].col.mode
 
     def train(self) :
         X, Y = self.get_independent_cols_rows(self.training_table)
