@@ -9,17 +9,21 @@ crossval_n = 5
 teak = True
 abe = True
 abe_k = [1,2,4,8,16]
-neuralnet = False
+neuralnet = True
 lregression = True
 
 #Error mesaures
 ar = True
 mr = True
-pred = False
+pred = True
 
 #Datasets. Give a comma-separated paths to the datasets for which the learners are to be run
-datasets= ["./data/desharnais.arff"]
+datasets= ["./data/albrecht.arff", "./data/cosmic.arff", "./data/isbsg10.arff", "./data/kitchenham.arff", \
+            "./data/miyazaki94.arff", "./data/coc81.arff", "./data/china.arff", "./data/cocomo-sdr.arff", \
+            "./data/desharnais.arff", "./data/kemerer.arff", "./data/maxwell.arff", "./data/nasa93.arff"]
 
 #Output files
 error_metrics = "./output/errors"
 skott_knott = "./output/sk"
+
+display_output = True

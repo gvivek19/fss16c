@@ -5,25 +5,26 @@ import stats
 import sys
 import random
 import os
-from abcd import Abcd
 import table
 from error import Error
 import config
 
 class cross_validation:
-    def __init__(self):
+    def __init__(self, data_filename):
         self.m = config.crossval_m
         self.n = config.crossval_n
         self.loocv = (self.n == 'LOOCV')
 
+        self.data_filename = data_filename
+        dataset_name = self.data_filename.split("/")[-1].split(".")[0]
         if config.ar :
-            self.ar_file = open(config.error_metrics + "_ar", "w")
+            self.ar_file = open(config.error_metrics + "_" + dataset_name + "_ar", "w")
         if config.mr :
-            self.mr_file = open(config.error_metrics + "_mr", "w")
+            self.mr_file = open(config.error_metrics + "_" + dataset_name + "_mr", "w")
         if config.pred :
-            self.pred_file = open(config.error_metrics + "_pred", "w")
+            self.pred_file = open(config.error_metrics + "_" + dataset_name + "_pred", "w")
 
-    def generate_data_files(self, data_filename) :
+    def generate_data_files(self) :
         currdir = os.getcwd() + "/temp1"
 
         if not os.path.exists(currdir):
@@ -33,14 +34,14 @@ class cross_validation:
                 if exc.errno != errno.EEXIST:
                     raise
 
-        filetype = data_filename.split(".")[-1]
+        filetype = self.data_filename.split(".")[-1]
         if filetype == "arff" :
-            rowsGenerator = ARFFReader(data_filename).read()
+            rowsGenerator = ARFFReader(self.data_filename).read()
         elif filetype == "csv" :
-            rowsGenerator = CSVReader(data_filename).read()
+            rowsGenerator = CSVReader(self.data_filename).read()
 
         headers = rowsGenerator.next()
-        headerText = "@relation " + data_filename + "\n"
+        headerText = "@relation " + self.data_filename + "\n"
         for h in headers :
             headerText += "@attribute " + h + "\n"
         headerText += "@data\n"
@@ -169,6 +170,6 @@ class cross_validation:
 
     @staticmethod
     def run_cross_validation(dataset):
-        cv = cross_validation()
-        cv.generate_data_files(dataset)
+        cv = cross_validation(dataset)
+        cv.generate_data_files()
         cv.run_learners()

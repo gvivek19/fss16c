@@ -1,8 +1,9 @@
 import sys, table, collections, math, MyUtils
 import random
 from time import time
-import Num
-import numpy
+from Num import Num
+from Sym import Sym
+from table import Column
 
 class Tree:
     def __init__(self, table_id, row_id, row_index, left, right):
@@ -22,16 +23,25 @@ class Tree:
 class Teak :
     def __init__(self, table, k) :
         self.table = table
+        self.fill_missing_values(self.table)
         self.tables = []
         self.tables.append(table)
         self.k = k
+
+    def fill_missing_values(self, table) :
+        for row in table.rows :
+            for col in table.cols :
+                if row[col.pos] == Column.UNKNOWN :
+                    if isinstance(self.table.cols[col.pos].col, Num) :
+                        row[col.pos] = self.table.cols[col.pos].col.mu
 
     def row_distance(self, row1, row2) :
         if row1 is None or row2 is None:
             return 10**32
         distance = 0
         for col in self.table.cols[:-1]:
-            distance += (col.col.dist(row1[col.pos], row2[col.pos]) ** 2)
+            if col.col is not None:
+                distance += (col.col.dist(row1[col.pos], row2[col.pos]) ** 2)
         return math.sqrt(distance)
 
     def find_best(self, rows, row, init_dist, better):
@@ -101,7 +111,6 @@ class Teak :
             left_tree, right_tree = self.find_trees(trees, rows[0], rows[0])
             new_tree = Tree(len(self.tables), rid, row_index, left_tree, None)
             new_trees.append(new_tree)
-
         self.tables.append(new_table)
         return self.gac_helper(new_table, new_trees)
 
@@ -116,9 +125,9 @@ class Teak :
     def prune(self, tree):
         if tree == None or (tree.left == None and tree.right == None):
             return
-        num_root = Num.Num()
-        num_left = Num.Num()
-        num_right = Num.Num()
+        num_root = Num()
+        num_left = Num()
+        num_right = Num()
 
         for effort in tree.effort_values:
             num_root.add(effort)

@@ -13,8 +13,13 @@ class linear_regression :
     def get_independent_cols_rows(self, table) :
         rows = []
         last_col = []
+
         for row in table.rows :
-            rows.append(row[:-1])
+            r = []
+            for c in self.training_table.cols[:-1]:
+                if isinstance(c.col, Num):
+                    r.append(row.contents[c.pos])
+            rows.append(r)
             last_col.append(row[-1])
         return (rows, last_col)
 
@@ -24,8 +29,6 @@ class linear_regression :
                 if row[col.pos] == Column.UNKNOWN :
                     if isinstance(self.training_table.cols[col.pos].col, Num) :
                         row[col.pos] = self.training_table.cols[col.pos].col.mu
-                    else :
-                        row[col.pos] = self.training_table.cols[col.pos].col.mode
 
     def train(self) :
         X, Y = self.get_independent_cols_rows(self.training_table)
