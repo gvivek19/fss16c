@@ -15,17 +15,17 @@ class cross_validation:
         self.n = config.crossval_n
         self.loocv = (self.n == 'LOOCV')
 
-        self.data_filename = data_filename
+        self.data_filename = config.base_dir + data_filename
         dataset_name = self.data_filename.split("/")[-1].split(".")[0]
         if config.ar :
-            self.ar_file = open(config.error_metrics + "_" + dataset_name + "_ar", "w")
+            self.ar_file = open(config.base_dir + config.error_metrics + "_" + dataset_name + "_ar", "w")
         if config.mr :
-            self.mr_file = open(config.error_metrics + "_" + dataset_name + "_mr", "w")
+            self.mr_file = open(config.base_dir + config.error_metrics + "_" + dataset_name + "_mr", "w")
         if config.pred :
-            self.pred_file = open(config.error_metrics + "_" + dataset_name + "_pred", "w")
+            self.pred_file = open(config.base_dir + config.error_metrics + "_" + dataset_name + "_pred", "w")
 
     def generate_data_files(self) :
-        currdir = os.getcwd() + "/temp1"
+        currdir = config.base_dir + "/temp"
 
         if not os.path.exists(currdir):
             try:
@@ -153,7 +153,7 @@ class cross_validation:
 
     def run_learner(self, learner) :
         print learner.__name__
-        path = os.getcwd() + '/temp1/'
+        path = config.base_dir + '/temp1/'
         for i in xrange(self.m) :
             for j in xrange(self.n) :
                 train_table = table.Table(path + 'train' + str(i) + "_" + str(j) + ".arff")
