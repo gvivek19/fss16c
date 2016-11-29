@@ -9,3 +9,5 @@ def run() :
 		Reports.generate_reports(dataset)
 		if config.display_output :
 		    Reports.print_output(dataset)
+if __name__ == "__main__":
+	run()
