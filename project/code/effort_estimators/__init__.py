@@ -12,5 +12,5 @@ def run() :
 		    Reports.print_output(dataset)
 
 if __name__ == "__main__":
-	#run()
+	run()
 	Reports.generate_charts(config.datasets)
