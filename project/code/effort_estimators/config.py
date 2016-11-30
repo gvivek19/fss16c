@@ -30,4 +30,4 @@ datasets= ["/data/albrecht.arff", "/data/cosmic.arff", \
 error_metrics = "/output/errors"
 skott_knott = "/output/sk"
 
-display_output = True
+display_output = False

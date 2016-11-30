@@ -56,6 +56,7 @@ class cross_validation:
         if self.loocv :
             self.n = length
 
+        print length
         for i in xrange(self.m) :
             random.shuffle(dataRows)
 
