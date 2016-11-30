@@ -1,0 +1,100 @@
+@relation ./data/nasa93.arff
+@attribute recordnumber
+@attribute projectname
+@attribute cat2
+@attribute forg
+@attribute center
+@attribute year
+@attribute mode
+@attribute rely
+@attribute data
+@attribute cplx
+@attribute time
+@attribute stor
+@attribute virt
+@attribute turn
+@attribute acap
+@attribute aexp
+@attribute pcap
+@attribute vexp
+@attribute lexp
+@attribute modp
+@attribute tool
+@attribute sced
+@attribute equivphyskloc
+@attribute act_effort
+@data
+69,Y,avionicsmonitoring,g,5,1978,semidetached,h,n,h,n,vh,l,n,h,h,h,h,h,l,l,l,144,576
+84,spl,Avionics,f,3,1977,embedded,h,l,vh,vh,xh,l,n,vh,vh,vh,vl,vl,h,h,n,41,599
+74,Y,avionicsmonitoring,g,5,1982,semidetached,n,l,n,n,vh,l,n,h,h,h,h,h,l,l,l,20,240
+70,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,n,n,vh,l,n,h,h,h,h,h,l,l,l,151,432
+60,slp,operatingsystem,g,6,1975,embedded,n,l,h,n,n,l,l,vh,n,vh,h,h,n,l,n,350,720
+18,gal,missionplanning,g,1,1984,semidetached,n,l,h,n,n,l,l,h,h,h,n,h,n,n,n,31.5,60
+40,X,monitor_control,g,2,1986,semidetached,n,n,h,h,n,n,n,n,n,n,n,n,n,n,n,16,114
+5,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,9.7,25.2
+46,Y,avionicsmonitoring,g,5,1977,semidetached,l,n,n,n,n,l,l,h,h,vh,n,h,l,l,h,423,2400
+11,gal,missionplanning,g,1,1984,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,6,24
+27,X,realdataprocessing,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,15.4,70
+42,slp,launchprocessing,g,6,1975,semidetached,h,l,h,n,n,l,l,n,n,h,n,n,h,vl,n,302,2400
+14,gal,missionplanning,g,1,1980,semidetached,n,l,h,n,n,h,l,h,h,h,l,vl,n,n,n,100,215
+68,Y,avionicsmonitoring,g,5,1983,organic,l,h,l,n,n,h,l,h,h,h,n,h,n,l,n,240,192
+13,gal,missionplanning,g,1,1985,semidetached,n,l,h,n,n,l,l,h,vh,n,n,l,n,n,n,11.3,36
+43,Y,application_ground,g,5,1982,semidetached,n,h,l,n,n,h,n,h,h,n,n,n,h,h,n,282.1,1368
+72,Y,avionicsmonitoring,g,5,1979,semidetached,n,n,h,n,vh,l,n,h,h,h,h,h,l,l,l,98,300
+93,Y,Avionics,f,5,1977,embedded,vh,h,vh,xh,xh,n,l,h,h,h,h,h,h,n,h,70,1645.9
+10,gal,missionplanning,g,1,1980,semidetached,n,l,h,n,n,l,l,h,vh,vh,n,h,n,n,n,20,72
+26,X,monitor_control,g,2,1986,semidetached,n,n,n,n,n,n,n,n,h,h,n,n,n,n,n,10,48
+45,Y,avionicsmonitoring,g,5,1982,semidetached,h,h,n,n,n,l,l,n,h,h,n,h,n,n,n,79,400
+21,X,avionicsmonitoring,g,2,1985,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,19.7,60
+28,X,realdataprocessing,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,48.5,239
+79,Y,missionplanning,g,5,1984,embedded,h,n,vh,h,h,l,vh,h,n,n,h,h,h,vh,h,60,409
+32,X,datacapture,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,35.5,192
+78,Y,operatingsystem,g,5,1979,semidetached,h,n,vh,n,vh,l,n,h,h,h,h,h,l,l,l,165,97
+82,hst,Avionics,f,2,1980,embedded,h,h,h,vh,xh,h,h,h,h,h,h,h,h,n,n,53,480
+17,gal,missionplanning,g,1,1980,semidetached,n,l,h,n,xh,l,l,h,vh,vh,n,h,n,n,n,150,324
+98,Y,Avionics,f,5,1980,embedded,vh,h,vh,xh,xh,n,n,h,h,h,h,h,h,n,h,233,8211
+49,Y,missionplanning,g,5,1980,semidetached,vh,n,xh,h,h,l,l,n,h,n,n,n,l,h,n,21,107
+76,Y,avionicsmonitoring,g,5,1978,semidetached,h,vh,h,n,vh,l,n,h,h,h,h,h,l,l,l,162,756
+61,Y,operatingsystem,g,5,1976,embedded,h,n,xh,h,h,l,l,h,n,n,h,h,h,h,n,70,458
+50,Y,simulation,g,5,1983,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,78,571.4
+8,erb,avionicsmonitoring,g,2,1982,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,66.6,352.8
+89,spl,Avionics,f,3,1977,embedded,h,l,vh,vh,xh,l,n,vh,vh,vh,vl,vl,h,h,n,24,430
+4,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,8.2,36
+73,Y,avionicsmonitoring,g,5,1979,semidetached,n,n,h,n,vh,l,n,h,h,h,h,h,l,l,l,85,300
+44,Y,application_ground,g,5,1982,semidetached,h,h,l,n,n,n,h,h,h,n,n,n,h,n,n,284.7,973
+37,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,n,n,n,n,n,n,13,60
+58,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,0.9,8.4
+91,Y,Avionics,f,5,1977,embedded,vh,h,vh,xh,xh,n,n,h,h,h,h,h,h,n,h,165,4178.2
+2,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,24.6,117.6
+36,X,monitor_control,g,2,1986,semidetached,h,n,h,n,n,n,n,n,n,n,n,n,n,n,n,6.5,42
+20,gal,missionplanning,g,1,1984,semidetached,n,l,h,n,xh,l,l,h,h,n,n,h,n,n,n,32.5,60
+24,X,monitor_control,g,2,1986,semidetached,h,n,n,h,n,n,n,n,h,h,n,n,n,n,n,15,90
+41,hst,datacapture,g,2,1980,semidetached,n,h,h,vh,h,l,h,h,n,h,l,h,h,n,l,177.9,1248
+30,X,communications,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,12.8,62
+77,Y,avionicsmonitoring,g,5,1978,semidetached,h,h,vh,n,vh,l,n,h,h,h,h,h,l,l,l,352,1200
+64,Y,avionicsmonitoring,g,5,1980,organic,n,n,n,n,n,l,l,h,h,h,n,h,n,l,n,40,150
+52,Y,simulation,g,5,1985,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,19.3,155
+39,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,n,n,n,n,n,n,8,42
+9,gal,missionplanning,g,1,1980,semidetached,h,l,h,xh,xh,l,h,h,h,h,n,h,h,h,n,7.5,72
+25,X,monitor_control,g,2,1986,semidetached,h,n,h,n,n,n,n,n,h,h,n,n,n,n,n,38,210
+51,Y,simulation,g,5,1984,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,11.4,98.8
+66,Y,avionicsmonitoring,g,5,1977,embedded,h,n,h,h,n,h,l,h,h,h,n,h,n,vl,n,150,882
+7,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,3.5,10.8
+63,Y,avionicsmonitoring,g,5,1971,organic,n,n,n,n,n,l,l,h,h,h,n,h,n,l,n,90,162
+100,X,Avionics,f,2,1983,embedded,h,n,vh,vh,vh,h,h,n,n,n,l,l,n,n,h,6.2,12
+67,Y,avionicsmonitoring,g,5,1976,embedded,vh,n,h,h,n,l,l,h,h,h,n,h,n,n,n,339,444
+54,Y,missionplanning,g,5,1979,semidetached,h,n,h,h,h,l,h,n,h,n,n,n,l,vh,n,219,2120
+1,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,25.9,117.6
+65,Y,avionicsmonitoring,g,5,1979,embedded,h,n,h,h,n,l,l,h,h,h,n,h,n,n,n,137,636
+55,Y,utility,g,5,1979,semidetached,h,n,h,h,h,l,h,n,h,n,n,n,l,vh,n,50,370
+15,gal,missionplanning,g,1,1983,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,20,48
+71,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,h,n,vh,l,n,h,h,h,h,h,l,l,l,34,72
+29,X,realdataprocessing,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,16.3,82
+38,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,h,n,h,h,h,n,90,444
+3,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,7.7,31.2
+56,spl,datacapture,g,2,1979,semidetached,vh,h,h,vh,vh,n,n,vh,vh,vh,n,h,h,h,l,227,1181
+53,Y,missionplanning,g,5,1979,semidetached,h,n,vh,h,h,l,h,h,n,n,h,h,l,vh,h,101,750
+34,X,avionicsmonitoring,g,2,1987,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,10.4,50
+48,Y,missionplanning,g,5,1984,semidetached,n,n,h,n,h,n,n,h,h,n,n,h,h,n,h,47.5,252
+62,Y,utility,g,5,1979,embedded,h,n,xh,h,h,l,l,h,n,n,h,h,h,h,n,271,2460
+92,Y,science,f,5,1977,embedded,vh,h,vh,xh,xh,n,n,h,h,h,h,h,h,n,h,65,1772.5

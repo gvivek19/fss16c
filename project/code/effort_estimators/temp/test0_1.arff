@@ -1,0 +1,45 @@
+@relation ./data/nasa93.arff
+@attribute recordnumber
+@attribute projectname
+@attribute cat2
+@attribute forg
+@attribute center
+@attribute year
+@attribute mode
+@attribute rely
+@attribute data
+@attribute cplx
+@attribute time
+@attribute stor
+@attribute virt
+@attribute turn
+@attribute acap
+@attribute aexp
+@attribute pcap
+@attribute vexp
+@attribute lexp
+@attribute modp
+@attribute tool
+@attribute sced
+@attribute equivphyskloc
+@attribute act_effort
+@data
+50,Y,simulation,g,5,1983,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,78,571.4
+64,Y,avionicsmonitoring,g,5,1980,organic,n,n,n,n,n,l,l,h,h,h,n,h,n,l,n,40,150
+4,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,8.2,36
+67,Y,avionicsmonitoring,g,5,1976,embedded,vh,n,h,h,n,l,l,h,h,h,n,h,n,n,n,339,444
+22,X,avionicsmonitoring,g,2,1985,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,66.6,300
+54,Y,missionplanning,g,5,1979,semidetached,h,n,h,h,h,l,h,n,h,n,n,n,l,vh,n,219,2120
+3,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,7.7,31.2
+1,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,25.9,117.6
+89,spl,Avionics,f,3,1977,embedded,h,l,vh,vh,xh,l,n,vh,vh,vh,vl,vl,h,h,n,24,430
+97,gal,Avionics,f,5,1982,embedded,vh,l,vh,vh,xh,l,l,h,l,n,vl,l,l,h,h,7.25,648
+33,X,missionplanning,g,2,1985,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,5.5,18
+49,Y,missionplanning,g,5,1980,semidetached,vh,n,xh,h,h,l,l,n,h,n,n,n,l,h,n,21,107
+41,hst,datacapture,g,2,1980,semidetached,n,h,h,vh,h,l,h,h,n,h,l,h,h,n,l,177.9,1248
+71,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,h,n,vh,l,n,h,h,h,h,h,l,l,l,34,72
+73,Y,avionicsmonitoring,g,5,1979,semidetached,n,n,h,n,vh,l,n,h,h,h,h,h,l,l,l,85,300
+51,Y,simulation,g,5,1984,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,11.4,98.8
+66,Y,avionicsmonitoring,g,5,1977,embedded,h,n,h,h,n,h,l,h,h,h,n,h,n,vl,n,150,882
+100,X,Avionics,f,2,1983,embedded,h,n,vh,vh,vh,h,h,n,n,n,l,l,n,n,h,6.2,12
+70,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,n,n,vh,l,n,h,h,h,h,h,l,l,l,151,432

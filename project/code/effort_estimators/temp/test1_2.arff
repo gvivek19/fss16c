@@ -1,0 +1,44 @@
+@relation ./data/nasa93.arff
+@attribute recordnumber
+@attribute projectname
+@attribute cat2
+@attribute forg
+@attribute center
+@attribute year
+@attribute mode
+@attribute rely
+@attribute data
+@attribute cplx
+@attribute time
+@attribute stor
+@attribute virt
+@attribute turn
+@attribute acap
+@attribute aexp
+@attribute pcap
+@attribute vexp
+@attribute lexp
+@attribute modp
+@attribute tool
+@attribute sced
+@attribute equivphyskloc
+@attribute act_effort
+@data
+44,Y,application_ground,g,5,1982,semidetached,h,h,l,n,n,n,h,h,h,n,n,n,h,n,n,284.7,973
+37,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,n,n,n,n,n,n,13,60
+58,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,0.9,8.4
+91,Y,Avionics,f,5,1977,embedded,vh,h,vh,xh,xh,n,n,h,h,h,h,h,h,n,h,165,4178.2
+2,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,24.6,117.6
+36,X,monitor_control,g,2,1986,semidetached,h,n,h,n,n,n,n,n,n,n,n,n,n,n,n,6.5,42
+20,gal,missionplanning,g,1,1984,semidetached,n,l,h,n,xh,l,l,h,h,n,n,h,n,n,n,32.5,60
+24,X,monitor_control,g,2,1986,semidetached,h,n,n,h,n,n,n,n,h,h,n,n,n,n,n,15,90
+41,hst,datacapture,g,2,1980,semidetached,n,h,h,vh,h,l,h,h,n,h,l,h,h,n,l,177.9,1248
+30,X,communications,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,12.8,62
+77,Y,avionicsmonitoring,g,5,1978,semidetached,h,h,vh,n,vh,l,n,h,h,h,h,h,l,l,l,352,1200
+64,Y,avionicsmonitoring,g,5,1980,organic,n,n,n,n,n,l,l,h,h,h,n,h,n,l,n,40,150
+52,Y,simulation,g,5,1985,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,19.3,155
+39,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,n,n,n,n,n,n,8,42
+9,gal,missionplanning,g,1,1980,semidetached,h,l,h,xh,xh,l,h,h,h,h,n,h,h,h,n,7.5,72
+25,X,monitor_control,g,2,1986,semidetached,h,n,h,n,n,n,n,n,h,h,n,n,n,n,n,38,210
+51,Y,simulation,g,5,1984,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,11.4,98.8
+66,Y,avionicsmonitoring,g,5,1977,embedded,h,n,h,h,n,h,l,h,h,h,n,h,n,vl,n,150,882

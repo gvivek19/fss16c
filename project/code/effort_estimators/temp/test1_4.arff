@@ -1,0 +1,45 @@
+@relation ./data/nasa93.arff
+@attribute recordnumber
+@attribute projectname
+@attribute cat2
+@attribute forg
+@attribute center
+@attribute year
+@attribute mode
+@attribute rely
+@attribute data
+@attribute cplx
+@attribute time
+@attribute stor
+@attribute virt
+@attribute turn
+@attribute acap
+@attribute aexp
+@attribute pcap
+@attribute vexp
+@attribute lexp
+@attribute modp
+@attribute tool
+@attribute sced
+@attribute equivphyskloc
+@attribute act_effort
+@data
+7,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,3.5,10.8
+63,Y,avionicsmonitoring,g,5,1971,organic,n,n,n,n,n,l,l,h,h,h,n,h,n,l,n,90,162
+100,X,Avionics,f,2,1983,embedded,h,n,vh,vh,vh,h,h,n,n,n,l,l,n,n,h,6.2,12
+67,Y,avionicsmonitoring,g,5,1976,embedded,vh,n,h,h,n,l,l,h,h,h,n,h,n,n,n,339,444
+54,Y,missionplanning,g,5,1979,semidetached,h,n,h,h,h,l,h,n,h,n,n,n,l,vh,n,219,2120
+1,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,25.9,117.6
+65,Y,avionicsmonitoring,g,5,1979,embedded,h,n,h,h,n,l,l,h,h,h,n,h,n,n,n,137,636
+55,Y,utility,g,5,1979,semidetached,h,n,h,h,h,l,h,n,h,n,n,n,l,vh,n,50,370
+15,gal,missionplanning,g,1,1983,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,20,48
+71,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,h,n,vh,l,n,h,h,h,h,h,l,l,l,34,72
+29,X,realdataprocessing,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,16.3,82
+38,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,h,n,h,h,h,n,90,444
+3,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,7.7,31.2
+56,spl,datacapture,g,2,1979,semidetached,vh,h,h,vh,vh,n,n,vh,vh,vh,n,h,h,h,l,227,1181
+53,Y,missionplanning,g,5,1979,semidetached,h,n,vh,h,h,l,h,h,n,n,h,h,l,vh,h,101,750
+34,X,avionicsmonitoring,g,2,1987,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,10.4,50
+48,Y,missionplanning,g,5,1984,semidetached,n,n,h,n,h,n,n,h,h,n,n,h,h,n,h,47.5,252
+62,Y,utility,g,5,1979,embedded,h,n,xh,h,h,l,l,h,n,n,h,h,h,h,n,271,2460
+92,Y,science,f,5,1977,embedded,vh,h,vh,xh,xh,n,n,h,h,h,h,h,h,n,h,65,1772.5

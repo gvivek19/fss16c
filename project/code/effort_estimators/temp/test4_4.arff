@@ -1,0 +1,45 @@
+@relation ./data/nasa93.arff
+@attribute recordnumber
+@attribute projectname
+@attribute cat2
+@attribute forg
+@attribute center
+@attribute year
+@attribute mode
+@attribute rely
+@attribute data
+@attribute cplx
+@attribute time
+@attribute stor
+@attribute virt
+@attribute turn
+@attribute acap
+@attribute aexp
+@attribute pcap
+@attribute vexp
+@attribute lexp
+@attribute modp
+@attribute tool
+@attribute sced
+@attribute equivphyskloc
+@attribute act_effort
+@data
+53,Y,missionplanning,g,5,1979,semidetached,h,n,vh,h,h,l,h,h,n,n,h,h,l,vh,h,101,750
+21,X,avionicsmonitoring,g,2,1985,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,19.7,60
+13,gal,missionplanning,g,1,1985,semidetached,n,l,h,n,n,l,l,h,vh,n,n,l,n,n,n,11.3,36
+11,gal,missionplanning,g,1,1984,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,6,24
+70,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,n,n,vh,l,n,h,h,h,h,h,l,l,l,151,432
+12,gal,missionplanning,g,1,1980,semidetached,n,l,h,n,n,l,l,h,vh,vh,n,h,n,n,n,100,360
+2,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,24.6,117.6
+98,Y,Avionics,f,5,1980,embedded,vh,h,vh,xh,xh,n,n,h,h,h,h,h,h,n,h,233,8211
+68,Y,avionicsmonitoring,g,5,1983,organic,l,h,l,n,n,h,l,h,h,h,n,h,n,l,n,240,192
+93,Y,Avionics,f,5,1977,embedded,vh,h,vh,xh,xh,n,l,h,h,h,h,h,h,n,h,70,1645.9
+84,spl,Avionics,f,3,1977,embedded,h,l,vh,vh,xh,l,n,vh,vh,vh,vl,vl,h,h,n,41,599
+58,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,0.9,8.4
+51,Y,simulation,g,5,1984,semidetached,n,h,h,vh,n,n,h,h,h,h,n,h,l,l,h,11.4,98.8
+61,Y,operatingsystem,g,5,1976,embedded,h,n,xh,h,h,l,l,h,n,n,h,h,h,h,n,70,458
+56,spl,datacapture,g,2,1979,semidetached,vh,h,h,vh,vh,n,n,vh,vh,vh,n,h,h,h,l,227,1181
+47,Y,missionplanning,g,5,1977,semidetached,n,n,n,n,n,l,n,h,vh,vh,l,h,h,n,n,190,420
+89,spl,Avionics,f,3,1977,embedded,h,l,vh,vh,xh,l,n,vh,vh,vh,vl,vl,h,h,n,24,430
+19,gal,missionplanning,g,1,1983,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,15,48
+33,X,missionplanning,g,2,1985,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,5.5,18

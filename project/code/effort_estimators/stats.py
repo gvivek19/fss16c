@@ -522,6 +522,27 @@ def leftRight(parts,epsilon=The.epsilon):
 Driver for the demos:
 
 """
+def get_ranking(data):
+  def zzz(x):
+    return int(100 * (x - lo) / (hi - lo + 0.00001))
+  data = map(lambda lst:Num(lst[0],lst[1:]),
+             data)
+  ranks=[]
+  results = []
+  for x in scottknott(data,useA12=True):
+    ranks += [(x.rank,x.median(),x)]
+  all=[]
+  for _,__,x in sorted(ranks): all += x.all
+  all = sorted(all)
+  lo, hi = all[0], all[-1]
+  line = "----------------------------------------------------"
+  last = None
+  for _,__,x in sorted(ranks):
+    q1,q2,q3 = x.quartiles()
+    results.append((x.rank+1, x.name))
+    last = x.rank
+  return results
+
 def skottknott(data, output_stream):
   def zzz(x):
     return int(100 * (x - lo) / (hi - lo + 0.00001))

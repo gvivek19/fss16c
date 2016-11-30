@@ -18,7 +18,7 @@ mr = True
 pred = True
 
 #Datasets. Give a comma-separated paths to the datasets for which the learners are to be run
-base_dir = '/home/vivek/Desktop/fss/fss16c/project/code/effort_estimators'
+base_dir = '.'
 datasets= ["/data/albrecht.arff", "/data/cosmic.arff", \
 			"/data/isbsg10.arff", "/data/kitchenham.arff", \
             "/data/miyazaki94.arff", "/data/coc81.arff", \

@@ -1,0 +1,45 @@
+@relation ./data/nasa93.arff
+@attribute recordnumber
+@attribute projectname
+@attribute cat2
+@attribute forg
+@attribute center
+@attribute year
+@attribute mode
+@attribute rely
+@attribute data
+@attribute cplx
+@attribute time
+@attribute stor
+@attribute virt
+@attribute turn
+@attribute acap
+@attribute aexp
+@attribute pcap
+@attribute vexp
+@attribute lexp
+@attribute modp
+@attribute tool
+@attribute sced
+@attribute equivphyskloc
+@attribute act_effort
+@data
+18,gal,missionplanning,g,1,1984,semidetached,n,l,h,n,n,l,l,h,h,h,n,h,n,n,n,31.5,60
+6,de,avionicsmonitoring,g,2,1979,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,2.2,8.4
+37,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,n,n,n,n,n,n,13,60
+9,gal,missionplanning,g,1,1980,semidetached,h,l,h,xh,xh,l,h,h,h,h,n,h,h,h,n,7.5,72
+14,gal,missionplanning,g,1,1980,semidetached,n,l,h,n,n,h,l,h,h,h,l,vl,n,n,n,100,215
+47,Y,missionplanning,g,5,1977,semidetached,n,n,n,n,n,l,n,h,vh,vh,l,h,h,n,n,190,420
+67,Y,avionicsmonitoring,g,5,1976,embedded,vh,n,h,h,n,l,l,h,h,h,n,h,n,n,n,339,444
+72,Y,avionicsmonitoring,g,5,1979,semidetached,n,n,h,n,vh,l,n,h,h,h,h,h,l,l,l,98,300
+15,gal,missionplanning,g,1,1983,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,20,48
+27,X,realdataprocessing,g,2,1982,semidetached,n,vh,h,vh,vh,l,h,vh,h,n,l,h,vh,vh,l,15.4,70
+77,Y,avionicsmonitoring,g,5,1978,semidetached,h,h,vh,n,vh,l,n,h,h,h,h,h,l,l,l,352,1200
+8,erb,avionicsmonitoring,g,2,1982,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,66.6,352.8
+38,X,monitor_control,g,2,1986,semidetached,n,n,h,n,n,n,n,n,n,h,n,h,h,h,n,90,444
+35,X,avionicsmonitoring,g,2,1987,semidetached,h,l,h,n,n,l,l,n,n,n,n,h,h,n,l,14,60
+71,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,h,n,vh,l,n,h,h,h,h,h,l,l,l,34,72
+19,gal,missionplanning,g,1,1983,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,15,48
+46,Y,avionicsmonitoring,g,5,1977,semidetached,l,n,n,n,n,l,l,h,h,vh,n,h,l,l,h,423,2400
+70,Y,avionicsmonitoring,g,5,1979,semidetached,n,l,n,n,vh,l,n,h,h,h,h,h,l,l,l,151,432
+11,gal,missionplanning,g,1,1984,semidetached,n,l,h,n,n,l,l,h,vh,h,n,h,n,n,n,6,24
