@@ -150,10 +150,10 @@ class Teak :
         R = random.random()
         metric = (R ** 9) * max_var
 
-        if (num_left_var > max_var + metric) or (num_left_var < max_var - metric):
+        if (num_left_var > num_root_var + metric):
             tree.left = None
 
-        if (num_right_var > max_var + metric) or (num_right_var < max_var - metric):
+        if (num_right_var > num_root_var + metric):
             tree.right = None
 
         self.prune(tree.left)
@@ -197,8 +197,8 @@ class Teak :
         return [ self.predict(row.contents) for row in test_table.rows]
 
 if __name__ == '__main__':
-    team = Teak(table.Table(sys.argv[1]), 3)
-    team.train()
-    testing_data = table.Table(sys.argv[2])
-    results = team.predict_all(testing_data)
-    print results
+	import config
+	for url in config.datasets:
+		print url
+		team = Teak(table.Table(config.base_dir + url), 3)
+		team.train()
