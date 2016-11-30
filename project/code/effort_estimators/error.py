@@ -5,7 +5,8 @@ class Error:
         errors = sorted(errors)
         n = len(errors)
         median = errors[n//2] if n % 2 == 1 else (errors[(n-1)//2] + errors[(n+1)//2]) / 2
-        return median
+        mean = sum(errors) / n
+        return mean
 
     @staticmethod
     def magnitude_relative_error(output_tuples):
@@ -13,7 +14,8 @@ class Error:
         errors = sorted(errors)
         n = len(errors)
         median = errors[n//2] if n % 2 == 1 else (errors[(n-1)//2] + errors[(n+1)//2]) / 2
-        return median
+        mean = sum(errors) / n
+        return mean
 
     @staticmethod
     def pred(output_tuples, x = 25):

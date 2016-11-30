@@ -140,9 +140,9 @@ class Teak :
             for effort in tree.right.effort_values:
                 num_right.add(effort)
 
-        num_root_var = num_root.sd()
-        num_left_var = num_left.sd()
-        num_right_var = num_right.sd()
+        num_root_var = num_root.sd() ** 2
+        num_left_var = num_left.sd() ** 2
+        num_right_var = num_right.sd() ** 2
 
         max_var = num_root_var if num_root_var > num_left_var else num_left_var
         max_var = max_var if max_var > num_right_var else num_right_var
@@ -150,10 +150,10 @@ class Teak :
         R = random.random()
         metric = (R ** 9) * max_var
 
-        if num_left_var > num_root_var + metric :
+        if (num_left_var > max_var + metric) or (num_left_var < max_var - metric):
             tree.left = None
 
-        if num_right_var > num_root_var + metric:
+        if (num_right_var > max_var + metric) or (num_right_var < max_var - metric):
             tree.right = None
 
         self.prune(tree.left)

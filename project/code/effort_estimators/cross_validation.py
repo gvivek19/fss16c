@@ -8,14 +8,13 @@ import os
 import table
 from error import Error
 import config
+import shutil
 
 class cross_validation:
     def __init__(self, data_filename):
         self.m = config.crossval_m
         self.n = config.crossval_n
         self.loocv = (self.n == 'LOOCV')
-        if self.loocv :
-			self.m = 1
 
         self.data_filename = config.base_dir + data_filename
         dataset_name = self.data_filename.split("/")[-1].split(".")[0]
@@ -175,3 +174,4 @@ class cross_validation:
         cv = cross_validation(dataset)
         cv.generate_data_files()
         cv.run_learners()
+        shutil.rmtree(config.base_dir + "/temp")
