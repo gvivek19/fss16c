@@ -56,7 +56,6 @@ class cross_validation:
         if self.loocv :
             self.n = length
 
-        print length
         for i in xrange(self.m) :
             random.shuffle(dataRows)
 
@@ -90,10 +89,30 @@ class cross_validation:
                         sep = ","
                     trainfile.write("\n")
 
-    def run_teak(self, train, test) :
-        learner = Teak.Teak(train, 3)
+    def run_teak_9(self, train, test) :
+        learner = Teak.Teak(train, config.teak_k, 9)
         learner.train()
         return learner.predict_all(test)
+
+    def run_teak_4_5(self, train, test) :
+        learner = Teak.Teak(train, config.teak_k, 4.5)
+        learner.train()
+        return learner.predict_all(test)
+
+    def run_teak_2_2(self, train, test) :
+        learner = Teak.Teak(train, config.teak_k, 2.2)
+        learner.train()
+        return learner.predict_all(test)
+
+    def run_teak0(self, train, test) :
+        learner = Teak.Teak(train, config.teak_k, 9)
+        learner.train(False)
+        return learner.predict_all(test)
+
+    def run_teak2(self, train, test):
+        learner = Teak.Teak(train, config.teak_k, 9)
+        learner.train(False)
+        return learner.predict_all2(test)
 
     def run_lr(self, train, test) :
         learner = linear_regression.linear_regression(train)
@@ -126,14 +145,21 @@ class cross_validation:
 
     def run_learners(self):
         learners = []
-        teak = True
-        abe = True
-        abe_k = [1,2,4,8,16]
-        neuralnet = True
-        lregression = True
 
         if config.teak :
-            learners.append(self.run_teak)
+            if 9 in config.teak_gamma:
+                learners.append(self.run_teak_9)
+            if 4.5 in config.teak_gamma:
+                learners.append(self.run_teak_4_5)
+            if 2.2 in config.teak_gamma:
+                learners.append(self.run_teak_2_2)
+
+        if config.teak0:
+            learners.append(self.run_teak0)
+
+        if config.teak2:
+            learners.append(self.run_teak2)
+
         if config.abe:
             if 1 in config.abe_k:
                 learners.append(self.run_abe_1)
@@ -145,8 +171,10 @@ class cross_validation:
                 learners.append(self.run_abe_8)
             if 16 in config.abe_k:
                 learners.append(self.run_abe_16)
+
         if config.neuralnet:
             learners.append(self.run_nnet)
+
         if config.lregression:
             learners.append(self.run_lr)
 
@@ -156,12 +184,18 @@ class cross_validation:
     def run_learner(self, learner) :
         print learner.__name__
         path = config.base_dir + '/temp/'
+
+        dataset_name = self.data_filename.split("/")[-1].split(".")[0]
+        efforts_file = open(config.base_dir + config.efforts + "_" + dataset_name + "_" + learner.__name__, "w")
         for i in xrange(self.m) :
             for j in xrange(self.n) :
                 train_table = table.Table(path + 'train' + str(i) + "_" + str(j) + ".arff")
                 test_table = table.Table(path + 'test' + str(i) + "_" + str(j) + ".arff")
 
                 results = learner(train_table, test_table)
+                for result in results:
+                    efforts_file.write(str(result[0]) + "," + str(result[1]))
+
                 if config.ar:
                     self.ar_file.write("%s,%.4f\n" %(learner.__name__, Error.absolute_residual_error(results)))
                 if config.mr:

@@ -4,197 +4,211 @@ from time import time
 from Num import Num
 from Sym import Sym
 from table import Column
+from ABE import ABE
+class Node:
+    def __init__(self, id, left, right, contents):
+        self.id = id
+        self.left_node = left
+        self.right_node = right
+        self.contents = contents
 
 class Tree:
-    def __init__(self, table_id, row_id, row_index, left, right):
-        self.table_id = table_id
-        self.row_id = row_id
-        self.row_index = row_index
-        self.left = left
-        self.right = right
-        self.effort_values = []
+    def __init__(self, sample_table):
+        self.table = table.clone(sample_table)
 
-        if left != None:
-            self.effort_values += left.effort_values
+    def centroid(self, tbl):
+        centroid = []
+        for col in tbl.cols:
+            if isinstance(col.col, Num) :
+                numbers = [row[col.pos] for row in tbl.rows]
+                centroid.append(MyUtils.median(numbers))
+            elif isinstance(col.col, Sym) :
+                centroid.append(col.col.mode)
+            else :
+                centroid.append(Column.UNKNOWN)
+        return centroid
 
-        if right != None:
-            self.effort_values += right.effort_values
+    def new_node(self, left_node, right_node, leaf_node = None):
+        contents = table.clone(self.table)
 
-class Teak :
-    def __init__(self, table, k) :
-        self.table = table
-        self.fill_missing_values(self.table)
-        self.tables = []
-        self.tables.append(table)
+        if left_node is not None:
+            for row in left_node.contents.rows :
+                contents.add_row(row)
+        if right_node is not None:
+            for row in right_node.contents.rows :
+                contents.add_row(row)
+        if leaf_node is not None:
+            contents.add_row(leaf_node)
+
+        c = self.centroid(contents)
+        self.table.add_row(c)
+        nodeid = len(self.table.rows) - 1
+
+        return Node(nodeid, left_node, right_node, contents)
+
+    def nearest_node(self, nodes, nde):
+        nearest = None
+        nearest_distance = 0
+        for node in nodes:
+            if node.id != nde.id:
+                dist = self.table.row_distance(self.table.rows[node.id], self.table.rows[nde.id])
+                if nearest is None or nearest_distance > dist:
+                    nearest = node
+                    nearest_distance = dist
+        return nearest
+
+    def gac(self, nodes):
+        if len(nodes) == 1:
+            self.root = nodes[0]
+            return
+
+        new_nodes = []
+        while len(nodes) > 1 :
+            node = nodes[0]
+            nearest = self.nearest_node(nodes, node)
+            nnode = self.new_node(node, nearest)
+            new_nodes.append(nnode)
+            nodes.remove(node)
+            nodes.remove(nearest)
+
+        if len(nodes) > 0:
+            new_nodes.append(nodes[0])
+
+        self.gac(new_nodes)
+
+    def __print_tree(self, node):
+        print self.table.rows[node.id]
+        if node.left_node:
+            self.__print_tree(node.left_node)
+        if node.right_node:
+            self.__print_tree(node.right_node)
+
+    def print_tree(self):
+        self.__print_tree(self.root)
+
+    def __traverse(self, node, row, k) :
+        if len(node.contents.rows) <= k :
+            return self.table.rows[node.id][-1]
+
+        nodes = [node.left_node, node.right_node]
+        return self.__traverse(self.nearest_node(nodes, node), row, k)
+
+    def traverse(self, row, k):
+        return self.__traverse(self.root, row, k)
+
+    def __traverse2(self, node, row, k) :
+        if len(node.contents.rows) <= k :
+            return self.table.rows[node.id][-1]
+
+        num_left_node = len(node.left_node.contents.rows)
+        num_right_node = len(node.right_node.contents.rows)
+        num_node = len(node.contents.rows)
+
+        var_curr_node = node.contents.cols[-1].col.sd() ** 2
+        var_left_node = node.left_node.contents.cols[-1].col.sd() ** 2
+        var_right_node = node.right_node.contents.cols[-1].col.sd() ** 2
+        var_subtree = (float(num_left_node) / num_node * var_left_node) + (float(num_right_node) / num_node * var_right_node)
+
+        nodes = [node.left_node, node.right_node]
+        nearest_node = self.nearest_node(nodes, node)
+
+        if var_subtree > var_node:
+            return self.table.rows[node.id][-1]
+
+        return self.__traverse2(nearest_node, row, k)
+
+    def traverse2(self, row, k):
+        return self.__traverse(self.root, row, k)
+
+    def prune(self, gamma, node = None):
+        if node is None:
+            node = self.root
+
+        var_node = node.contents.cols[-1].col.sd() ** 2
+        var_root = self.root.contents.cols[-1].col.sd() ** 2
+
+        if len(node.contents.rows) <= 1:
+            return
+
+        num_left = len(node.left_node.contents.rows)
+        num_right = len(node.right_node.contents.rows)
+        num_node = num_left + num_right
+
+
+        var_left = node.left_node.contents.cols[-1].col.sd() ** 2
+        var_right = node.right_node.contents.cols[-1].col.sd() ** 2
+
+        var_subtree = (float(num_left) / num_node) * var_left + (float(num_right) / num_node) * var_right
+
+        metric = random.random() ** gamma * var_node + var_node
+        # print var_subtree, metric, var_node
+        if var_subtree > metric :
+            # print "pruned", num_node
+            node.left_node = None
+            node.right_node = None
+        else :
+            self.prune(gamma, node.left_node)
+            self.prune(gamma, node.right_node)
+
+    def tree2table(self, tbl = None, node = None):
+        if tbl is None:
+            tbl = table.clone(self.table)
+        if node is None:
+            node = self.root
+
+        if node.left_node is None and node.right_node is None:
+            tbl.add_row(self.table.rows[node.id])
+        else :
+            self.tree2table(tbl, node.left_node)
+            self.tree2table(tbl, node.right_node)
+        return tbl
+
+class Teak:
+    def __init__(self, train_table, k=3, gamma=9):
+        self.train_table = train_table
+        self.fill_missing_values(self.train_table)
         self.k = k
+        self.gamma = gamma
+        self.cluster_tree = None
+        self.model = None
 
     def fill_missing_values(self, table) :
         for row in table.rows :
             for col in table.cols :
                 if row[col.pos] == Column.UNKNOWN :
-                    if isinstance(self.table.cols[col.pos].col, Num) :
-                        row[col.pos] = self.table.cols[col.pos].col.mu
+                    if isinstance(self.train_table.cols[col.pos].col, Num) :
+                        row[col.pos] = self.train_table.cols[col.pos].col.mu
 
-    def row_distance(self, row1, row2) :
-        if row1 is None or row2 is None:
-            return 10**32
-        distance = 0
-        for col in self.table.cols[:-1]:
-            if col.col is not None:
-                distance += (col.col.dist(row1[col.pos], row2[col.pos]) ** 2)
-        return math.sqrt(distance)
 
-    def find_best(self, rows, row, init_dist, better):
-        output = None
-        distance = init_dist
-        for r in rows :
-            if r.rid != row.rid :
-                current_distance = self.row_distance(row, r)
-                if better(current_distance , distance) :
-                    distance = current_distance
-                    output = r
-        return output
+    def gac(self, tbl):
+        tree = Tree(tbl)
+        nodes = []
 
-    def find_nearest(self, rows, row) :
-        return self.find_best(rows, row, 10**32, MyUtils.less)
+        for row in tbl.rows :
+            nodes.append(tree.new_node(None, None, row.contents))
 
-    def centroid(self, row1, row2):
-        result = []
-        row1_contents = row1.contents
-
-        if (row2 is not None):
-            row2_contents = row2.contents
-        else:
-            row2_contents = [0 for i in range(0,len(row1))]
-        for i in range(0,len(row1)):
-            if isinstance(row1_contents[i], int) and isinstance(row2_contents[i], int) :
-            	result.append((row1_contents[i] + row2_contents[i]) / 2)
-            else :
-            	c = random.random()
-            	if c < 0.5 :
-            		result.append(row1_contents[i])
-            	else :
-            		result.append(row2_contents[i])
-        return result
-
-    def find_trees(self, trees, left_row, right_row):
-        left_tree = None
-        right_tree = None
-        for tree in trees:
-            if tree.row_id == left_row.rid:
-                left_tree = tree
-            elif tree.row_id == right_row.rid:
-                right_tree = tree
-        return left_tree, right_tree
-
-    def gac_helper(self, curr_table, trees) :
-        if len(trees) == 1:
-            return trees[0]
-        rows = []
-        for row in curr_table.rows:
-            rows.append(row)
-        new_table = table.clone(curr_table)
-        new_trees = []
-        row_index = 0
-        while len(rows) > 1 :
-            row = rows[0]
-            nearest = self.find_nearest(rows, row)
-            rid = new_table.add_row(self.centroid(nearest, row))
-            left_tree, right_tree = self.find_trees(trees, row, nearest)
-            new_tree = Tree(len(self.tables), rid, row_index, left_tree, right_tree)
-            new_trees.append(new_tree)
-            rows.remove(row)
-            rows.remove(nearest)
-            row_index += 1
-        if len(rows) == 1:
-            rid = new_table.add_row(rows[0])
-            left_tree, right_tree = self.find_trees(trees, rows[0], rows[0])
-            new_tree = Tree(len(self.tables), rid, row_index, left_tree, None)
-            new_trees.append(new_tree)
-        self.tables.append(new_table)
-        return self.gac_helper(new_table, new_trees)
-
-    def gac(self, table) :
-        trees = []
-        for i, row in enumerate(table.rows):
-            tree = Tree(0, row.rid, i, None, None)
-            tree.effort_values.append(row.contents[-1])
-            trees.append(tree)
-        return self.gac_helper(table, trees)
-
-    def prune(self, tree):
-        if tree == None or (tree.left == None and tree.right == None):
-            return
-        num_root = Num()
-        num_left = Num()
-        num_right = Num()
-
-        for effort in tree.effort_values:
-            num_root.add(effort)
-
-        if tree.left is not None :
-            for effort in tree.left.effort_values:
-                num_left.add(effort)
-
-        if tree.right is not None:
-            for effort in tree.right.effort_values:
-                num_right.add(effort)
-
-        num_root_var = num_root.sd() ** 2
-        num_left_var = num_left.sd() ** 2
-        num_right_var = num_right.sd() ** 2
-
-        max_var = num_root_var if num_root_var > num_left_var else num_left_var
-        max_var = max_var if max_var > num_right_var else num_right_var
-
-        R = random.random()
-        metric = (R ** 9) * max_var
-
-        if (num_left_var > num_root_var + metric):
-            tree.left = None
-
-        if (num_right_var > num_root_var + metric):
-            tree.right = None
-
-        self.prune(tree.left)
-        self.prune(tree.right)
-
+        tree.gac(nodes)
         return tree
 
-    def tree2table(self, table, tree):
-    	if tree is None:
-    		return
-    	if tree.left is None and tree.right is None:
-            table.add_row(self.table.rows[tree.row_index])
-        self.tree2table(table, tree.left)
-        self.tree2table(table, tree.right)
-
-    def train(self):
-        cluster_tree = self.gac(self.table)
-        pruned_tree = self.prune(cluster_tree)
-        pruned_table = table.clone(self.table)
-        self.tree2table(pruned_table, pruned_tree)
-        self.model = self.gac(pruned_table)
-
-    def get_tree_row(self, node):
-        if node is None :
-            return None
-        return self.tables[node.table_id].rows[node.row_index].contents
-
-    def predict_helper(self, tree, row):
-        if (len(tree.effort_values) <= self.k):
-            return self.get_tree_row(tree)[-1]
-        if self.row_distance(self.get_tree_row(tree.left), row) < self.row_distance(self.get_tree_row(tree.right), row) :
-            return self.predict_helper(tree.left, row)
-        else:
-            return self.predict_helper(tree.right, row)
+    def train(self, prune = True):
+        gac1 = self.gac(self.train_table)
+        if prune :
+            gac1.prune(self.gamma)
+            pruned_table = gac1.tree2table()
+            # print len(self.train_table.rows), len(pruned_table.rows)
+            gac2 = self.gac(pruned_table)
+            self.model = gac2
+        else :
+            self.model = gac1
 
     def predict(self, row):
-        tree = self.model
-        return (row[-1], self.predict_helper(tree, row))
+        return (row[-1], self.model.traverse(row, self.k))
 
-    def predict_all(self, test_table) :
-        return [ self.predict(row.contents) for row in test_table.rows]
+    def predict_all(self, test_table):
+        return [self.predict(row.contents) for row in test_table.rows]
+
+    def predict_all2(self, test_table):
+        return [(row[-1], self.model.traverse2(row, self.k)) for row in test_table.rows]
 
 if __name__ == '__main__':
 	import config

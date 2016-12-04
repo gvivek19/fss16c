@@ -7,8 +7,15 @@ crossval_n = 5
 
 #Learners
 teak = True
+teak_k = 3
+teak_gamma = [9, 4.5, 2.2]
+
+teak0 = True
+teak2 = True
+
 abe = True
 abe_k = [1,2,4,8,16]
+
 neuralnet = True
 lregression = True
 
@@ -27,7 +34,8 @@ datasets= ["/data/albrecht.arff", "/data/cosmic.arff", \
             "/data/maxwell.arff", "/data/nasa93.arff"]
 
 #Output files
-error_metrics = "/output/errors"
-skott_knott = "/output/sk"
+efforts = "/output/efforts/efforts"
+error_metrics = "/output/errors/errors"
+skott_knott = "/output/sk/sk"
 
-display_output = False
+display_output = True

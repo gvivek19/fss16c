@@ -95,5 +95,6 @@ class Reports:
         print dataset_name
         fileobject = open(config.base_dir + config.skott_knott + "_" + dataset_name, "r")
         for line in fileobject :
+            line = line[:-1]
             print line
         print "\n\n"
