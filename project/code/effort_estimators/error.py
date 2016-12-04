@@ -25,3 +25,13 @@ class Error:
             if (rel_error * 100) <= x:
                 count += 1
         return (count *100.0 / len(output_tuples))
+
+    @staticmethod
+    def absolute_residual_error_all(output_tuples):
+        errors = [abs(tup[1] - tup[0]) for tup in output_tuples]
+        return errors
+
+    @staticmethod
+    def magnitude_relative_error_all(output_tuples):
+        errors = [abs(tup[1] - tup[0])/float(tup[0])  for tup in output_tuples]
+        return errors

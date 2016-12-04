@@ -194,7 +194,7 @@ class cross_validation:
 
                 results = learner(train_table, test_table)
                 for result in results:
-                    efforts_file.write(str(result[0]) + "," + str(result[1]))
+                    efforts_file.write(str(result[0]) + "," + str(result[1]) + "\n")
 
                 if config.ar:
                     self.ar_file.write("%s,%.4f\n" %(learner.__name__, Error.absolute_residual_error(results)))

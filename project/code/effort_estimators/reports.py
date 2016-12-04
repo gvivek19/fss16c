@@ -1,7 +1,8 @@
 import config
 import stats
-import sys
+import sys, math
 import matplotlib.pyplot as plt
+from error import Error
 
 class Reports:
     @staticmethod
@@ -31,65 +32,6 @@ class Reports:
             Reports.analyze_report(config.base_dir + config.error_metrics + "_" + dataset_name + "_pred", op_file)
 
     @staticmethod
-    def generate_charts(datasets):
-        e_types = ["_ar", "_mr", "_pred"]
-        results = []
-
-
-
-        i = 0
-        for e_type in e_types:
-            algo_count_map = {}
-            dataset_algo_map = {}
-            values = {}
-            temp_list = []
-            temp_dict = {}
-            i = 0
-            print e_type + " -----------------------------------   "
-            for dataset in datasets:
-
-                dataset_name = dataset.split("/")[-1].split(".")[0]
-                report_filename = config.base_dir + config.error_metrics + "_" + dataset_name + e_type
-                report_file = open(report_filename, "r")
-                for line in report_file:
-                    if len(line) > 0:
-                        contents = line.split(",")
-                        z = values.get(contents[0], [])
-                        z.append(float(contents[1]))
-                        values[contents[0]] = z
-                result = stats.get_ranking( [ [k] + v for k,v in values.items() ])
-                print dataset_name
-                print result
-            '''
-                if e_type is not '_pred':
-                    result = result[0]
-                else:
-                    result = result[-1]
-                algo = result[1].split('_')[1]
-                dataset_algo_map[dataset_name] = algo
-                if algo not in algo_count_map:
-                    algo_count_map[algo] = 0
-                    i += 1
-                    temp_dict[algo] = i
-                temp_list.append(temp_dict[algo])
-                algo_count_map[algo] += 1
-
-            plt.plot(temp_list, range(len(dataset_algo_map)), 'ro')
-            plt.xticks(temp_list, dataset_algo_map.values())
-            plt.xlim([0,12  ])
-            plt.yticks(range(len(dataset_algo_map)), dataset_algo_map.keys())
-            plt.show()
-            plt.plot(range(len(algo_count_map)), algo_count_map.values(), 'ro')
-            plt.xticks(range(len(algo_count_map)), algo_count_map.keys())
-            plt.ylim([0,12])
-            plt.xlim([0,10])
-            plt.show()
-            '''
-
-
-
-
-    @staticmethod
     def print_output(dataset):
         dataset_name = dataset.split("/")[-1].split(".")[0]
         print dataset_name
@@ -98,3 +40,63 @@ class Reports:
             line = line[:-1]
             print line
         print "\n\n"
+
+    @staticmethod
+    def __plot_graph(error_values, colors, filename):
+        plt.close('all')
+
+        _, axarr = plt.subplots(3, 4, figsize = (20, 20))
+        axes = [item for sublist in axarr for item in sublist]
+
+        datasets = error_values.keys()
+        learners = colors.keys()
+        lines = [0 for _ in xrange(len(datasets))]
+
+        for i, dataset in enumerate(datasets):
+            for j, learner in enumerate(learners):
+                errors = sorted(error_values[dataset][learner])
+                errors = [math.log(k, 10) if k != 0 else math.log(10**-32, 10) for k in errors]
+                lines[j],  = axes[i].plot(errors, label=learner, color=colors[learner])
+
+            axes[i].set_title(dataset)
+            # plt.legend(loc="best", shadow=True, title=error_names[em], fancybox=True), bbox_to_anchor=(0.5, 1.05)
+        plt.figlegend(lines, learners, loc = 'lower center', ncol=6, fancybox=True, shadow=True)
+        plt.tight_layout(0, 1, 0, (0.03, 0.07, 0.97, 0.97))
+        # plt.show()
+        plt.savefig(filename)
+        plt.close()
+
+    @staticmethod
+    def generate_error_charts(datasets):
+        colors = {'teak_2_2' : "#000000", 'teak2' : "#FFB500", 'teak0' : "#1CE6FF", 'nnet' : "#FF34FF", \
+                    'abe_2' : "#FF4A46", 'abe_16' : "#008941", 'abe_1' : "#B79762", 'teak_4_5' : "#A30059", \
+                    'abe_4' : "#006FA6", 'lr' : "#7A4900", 'abe_8' : "#0000A6", 'teak_9' : "#004D43"}
+
+        error_names = {"ar" : "Absolute Residual Error", "mr" : "Magnitude Relative Error"}
+
+
+        error_values = {'ar' : {}, 'mr' : {}}
+
+        for i, dataset in enumerate(datasets):
+            dataset_name = dataset.split("/")[-1].split(".")[0]
+
+            error_values['ar'][dataset_name] = {}
+            error_values['mr'][dataset_name] = {}
+
+            for learner in colors :
+                effort_filename = config.base_dir + config.efforts + "_" + dataset_name + "_run_" + learner
+                _file = open(effort_filename, "r")
+                _errors = []
+                for line in _file:
+                    if len(line) > 0:
+                        actual = float(line.split(",")[0])
+                        predicted = float(line.split(",")[1])
+                        _errors.append((actual, predicted))
+                ar = Error.absolute_residual_error_all(_errors)
+                mr = Error.magnitude_relative_error_all(_errors)
+
+                error_values['ar'][dataset_name][learner] = ar
+                error_values['mr'][dataset_name][learner] = mr
+
+        Reports.__plot_graph(error_values['ar'], colors, config.base_dir + config.skott_knott[:-2] + "/ar.png")
+        Reports.__plot_graph(error_values['mr'], colors, config.base_dir + config.skott_knott[:-2] + "/mre.png")
