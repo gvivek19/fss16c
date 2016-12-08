@@ -68,9 +68,12 @@ class Reports:
 
     @staticmethod
     def generate_error_charts(datasets):
-        colors = {'teak_2_2' : "#000000", 'teak2' : "#FFB500", 'teak0' : "#1CE6FF", 'nnet' : "#FF34FF", \
-                    'abe_2' : "#FF4A46", 'abe_16' : "#008941", 'abe_1' : "#B79762", 'teak_4_5' : "#A30059", \
-                    'abe_4' : "#006FA6", 'lr' : "#7A4900", 'abe_8' : "#0000A6", 'teak_9' : "#004D43"}
+        #colors = {'teak_2_2' : "#000000", 'teak2' : "#FFB500", 'teak0' : "#1CE6FF", 'nnet' : "#FF34FF", \
+        #            'abe_2' : "#FF4A46", 'abe_16' : "#008941", 'abe_1' : "#B79762", 'teak_4_5' : "#A30059", \
+        #            'abe_4' : "#006FA6", 'lr' : "#7A4900", 'abe_8' : "#0000A6", 'teak_9' : "#004D43"}
+        colors = {'teak_2_2' : "#000000", 'teak2' : "#FFB500", 'teak0' : "#1CE6FF", \
+                    'abe_2' : "#FF4A46", 'teak_4_5' : "#A30059", \
+                    'teak_9' : "#004D43"}
 
         error_names = {"ar" : "Absolute Residual Error", "mr" : "Magnitude Relative Error"}
 
